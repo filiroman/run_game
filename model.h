@@ -1,5 +1,5 @@
 /*
-	game model class
+	main game model class
 	
 	(c) roman filippov, 2012
 */
@@ -8,20 +8,26 @@
 #include <list>
 #include "player.h"
 #include "gameexception.h"
+#include "options.h"
+#include "menu.h"
 using std::list;
 
 class Model {
 private:
-	int FIELD_SIZE;
+	static int 
+	Menu *menu;
+	Options *options;
 	char *b,**board;		//Game Board
-	list<Player> Players;
+	list<Player> players;
 	bool checkRange(int &x,int &y);
+	void createWorld();
 public:
-	Model(int &fsize=10);
+	Model();
 	~Model();
 	bool addPlayer(Player &p);
 	bool isEmpty(int &x,int &y);
 	void setState(int &x,int &y,char &state);
+	bool step();
 };
 
 inline bool Model::checkRange(int &x,int &y) {

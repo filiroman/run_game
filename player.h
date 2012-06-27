@@ -25,7 +25,7 @@ public:
 		return y;
 	};
 		
-	virtual void turn() {};
+	virtual void turn()=0;
 };
 
 inline void Player::setBoard(Model &b) {

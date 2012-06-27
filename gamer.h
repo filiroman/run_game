@@ -8,16 +8,8 @@
 #include "player.h"
 
 class Gamer: public Player {
+public:
 	virtual void turn();
 };
-
-virtual void Gamer::turn() {
-	int a,b;
-	scanf("%d%d",&a,&b);
-	while (!moveTo(a,b)) {
-		scanf("%d%d",&a,&b);
-	}
-	return;
-}
 
 #endif
