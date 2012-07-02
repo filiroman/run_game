@@ -10,6 +10,7 @@
 using std::vector;
 
 Menu::Menu() {
+	exit = false;
 	items.push_back("New Game");
 	items.push_back("Settings");
 	items.push_back("About");
@@ -17,6 +18,8 @@ Menu::Menu() {
 	items.push_back("Exit");
 }
 
-bool Menu::show() {
-	//User interacting actions, return true if exit is pressed;
+int Menu::show() {
+	for(vector<string>::iterator it = items.begin(); it!= items.end(); ++it)
+		printf("%s\n",it->c_str());
+		
 }

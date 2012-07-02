@@ -13,8 +13,6 @@ using std::list;
 Model::Model() {
 	if (fsize<5)
 		throw GameException("Wrong field size");
-	options = new Options();	
-	menu = new Menu();	
 	b = NULL;
 	board = NULL;
 }
@@ -46,8 +44,6 @@ Model::~Model() {
 		delete [] b;
 	if (board != NULL)
 		delete [] board;
-	delete menu;
-	delete options;
 }
 
 bool Model::addPlayer(Player &p) {

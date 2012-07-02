@@ -27,5 +27,6 @@ public:
 	bool loadFromFile(string &filename="DEFAULT_FILENAME");	
 	void save(string &filename="OPTIONS_FILENAME");
 	settings *getSettings(); 
+	void optionsScene();
 };
 #endif

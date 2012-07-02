@@ -14,8 +14,6 @@ using std::list;
 
 class Model {
 private:
-	static int 
-	Menu *menu;
 	Options *options;
 	char *b,**board;		//Game Board
 	list<Player> players;
