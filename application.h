@@ -20,6 +20,7 @@ private:
 	//list<Model> games;			//Using list in perspective to many parallel online games (each with menu and options)
 public:
 	Application();
+	~Application();
 	//void newGame();
 	void run();	
 	void startGame();

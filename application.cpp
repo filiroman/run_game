@@ -12,9 +12,15 @@
 using std::list;
 
 Application::Application() {
-	game = new Model();
 	options = new Options();
 	menu = new Menu();	
+	game = new Model(options);
+}
+
+Application::~Application() {
+	delete game;
+	delete menu;
+	delete options;
 }
 
 /*void Application::newGame() {
@@ -24,6 +30,9 @@ Application::Application() {
 
 void Application::startGame() {
 	game->createWorld();
+	game->createWalls();
+	game->createPlayers(1,1);		//Create 1 real player (don't change!! not implemented yet) 
+											//and 1 computer player (may be changed)
 	
 	while(game->step()) {
 		
