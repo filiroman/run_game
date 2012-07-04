@@ -5,6 +5,7 @@
 */
 #include <cstdlib>
 #include <cassert>
+#include <cstdio>
 #include "options.h"
 
 Options::Options() {
@@ -25,7 +26,7 @@ void Options::toDefaults() {
 	}
 }
 
-bool Options::loadFromFile(string &filename="DEFAULT_FILENAME") {
+bool Options::loadFromFile(const string &filename = "DEFAULT_FILENAME") {
 	FILE *f = fopen(filename,"rb");
 	assert (f != NULL);
 	s = new settings;
@@ -38,9 +39,9 @@ bool Options::loadFromFile(string &filename="DEFAULT_FILENAME") {
 	return false;
 }
 
-void Options::save(string &filename="OPTIONS_FILENAME") {
-	FILE *f = fopen(filename,"wb");
-	assert(f != NULL)
+void Options::save(const string &filename = "OPTIONS_FILENAME") {
+	FILE *f = fopen(filename.c_str(),"wb");
+	assert(f != NULL);
 	
 	int n = fwrite(s,sizeof(settings),1,f);
 	assert(n == 1);

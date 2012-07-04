@@ -13,7 +13,7 @@ virtual void Gamer::turn() {
 	while (!moveTo(a,b)) {
 		scanf("%d%d",&a,&b);
 	}
-	return;
+	printf("%d %d \n",a,b);
 }
 
 Gamer::Gamer(Model *model,int &a=0,int &b=0) :Player(model,a,b) {};

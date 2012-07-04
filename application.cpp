@@ -35,7 +35,7 @@ void Application::startGame() {
 											//and 1 computer player (may be changed)
 	
 	while(game->step()) {
-		
+		//processing game
 	}	
 }
 

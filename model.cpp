@@ -6,6 +6,7 @@
 #include <list>
 #include <ctime>
 #include <cstdlib>
+#include <map>
 #include "model.h"
 #include "gameexception.h"
 #include "options.h"
@@ -13,6 +14,7 @@
 #include "gamer.h"
 #include "ai.h"
 using std::list;
+using std::pair;
 
 Model::Model(Options *opt) {
 	if (fsize<5)
@@ -20,6 +22,10 @@ Model::Model(Options *opt) {
 	b = NULL;
 	board = NULL;
 	options = opt;
+}
+
+pair<int,int> Model::getPlayerPosition() {
+	return std::make_pair(players.begin()->getX(),players.begin()->getY());
 }
 
 bool Model::step() {
@@ -32,26 +38,29 @@ bool Model::step() {
 void Model::createWalls() {
 	srand( time (NULL) );	
 	printf("Creating walls...\n");
-				// + check path availability of every player
+
 
 }
 
-void Model::createPlayers(int &gamers=1, int &computers=1) {
+void Model::createPlayers(int computers=1) {
 	printf("Creating players...\n");
-	for (int i=0;i<gamers;++i) {
-		Gamer g(this,0,0);
-		players.push_back(g);
-	}
+
+	Gamer g(this,0,0);				
+	addPlayer(g);									
+
 	settings *st = options->getSettings();
 	for (int i=0;i<computers;++i) {
-		Ai a(this,st->size-1,st->size-1);
+		Ai a(this,st.size-1-i,st.size-1);
+		addPlayer(a);
 	}		
+					// + check path availability of every player
 }
 
 void Model::createWorld() {
+	printf("Creating world...\n");
 
 	settings *st = options->getSettings();
-	int FIELD_SIZE = st->size;
+	int FIELD_SIZE = st.size;
 	
 	board = new int* [FIELD_SIZE];							//Creating array for 2 new
 	b = new int [FIELD_SIZE*FIELD_SIZE];
@@ -71,8 +80,8 @@ Model::~Model() {
 }
 
 bool Model::addPlayer(Player &p) {
-	if (isEmpty(p.x(),p.y())){
-		b[p.x()][p.y()] = '1';
+	if (getState(p.getX(),p.getY()) == GAME_EMPTY_CELL) {
+		b[p.getX()][p.getY()] = '1';
 		p.setBoard(this);
 		players.push_back(p);
 		return true;

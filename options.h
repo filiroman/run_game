@@ -24,8 +24,8 @@ public:
 	Options();
 	~Options();
 	void toDefault();
-	bool loadFromFile(string &filename="DEFAULT_FILENAME");	
-	void save(string &filename="OPTIONS_FILENAME");
+	bool loadFromFile(const string &filename = "DEFAULT_FILENAME");	
+	void save(const string &filename = "OPTIONS_FILENAME");
 	settings *getSettings(); 
 	void optionsScene();
 };

@@ -10,6 +10,10 @@
 #include "gameexception.h"
 #include "options.h"
 #include "menu.h"
+#include "ai.h"
+#define GAME_WALL 30
+#define GAME_PLAYER 20
+#define GAME_EMPTY_CELL 10
 using std::list;
 
 class Model {
@@ -20,25 +24,34 @@ private:
 	bool checkRange(int &x,int &y);
 	void createWorld();
 	void createWalls();
-	void createPlayers(int &gamers, int &computers);
+	void createPlayers(int computers=1);
 public:
 	Model(Options *opt);
 	~Model();
 	bool addPlayer(Player &p);
-	bool isEmpty(int &x,int &y);
+	int getState(int &x,int &y);
 	void setState(int &x,int &y,char &state);
 	bool step();
+	friend class Ai;
 };
 
 inline bool Model::checkRange(int &x,int &y) {
+	settings *st = options->getSettings();
+	int FIELD_SIZE = st->size;
 	if (x<0 || y<0 || x>=FIELD_SIZE || y>=FIELD_SIZE)
 		return false;
 	return true;
 }
 
-inline bool Model::isEmpty(int &x,int &y) {
-	if (checkRange(x,y))
-		return board[x][y] == '0';
+inline int Model::getState(int &x,int &y) {
+	if (checkRange(x,y)) {
+		if (board[x][y] == '0')
+			return GAME_EMPTY_CELL;
+		else if (board[x][y] == '2')
+			return GAME_WALL;
+		else 
+			return GAME_PLAYER;
+	}
 	else
 		throw new GameException("wrong coordinates to check");
 }

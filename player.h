@@ -5,8 +5,7 @@
 */
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
-
-#include "model.h"
+class Model;
 
 class Player {
 private:
@@ -14,22 +13,18 @@ private:
 	Model *m;
 	// - Something else (maybe health, e.t.c)
 public:
-	Player(Model *model,int &a=0,int &b=0);			//Initialize player on (x,y) position;
+	Player(Model *model,int &a,int &b);			//Initialize player on (a,b) position;
 	bool moveTo(int &a,int &b);
-	void setBoard(Model &b);
+	void setBoard(Model *b);
 	
-	int x()const {			//inline
+	int getX()const {			//inline
 		return x;
 	};
-	int y()const {
+	int getY()const {
 		return y;
 	};
 		
 	virtual void turn()=0;
 };
-
-inline void Player::setBoard(Model *b) {
-	m = b;
-}
 
 #endif

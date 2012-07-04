@@ -7,7 +7,7 @@
 #include "model.h"
 #include "gameexception.h"
 
-Player::Player(Model *model,int &a=0,int &b=0) {
+Player::Player(Model *model,int &a,int &b) {
 	if(m->checkRange(a,b)) {
 		x = a;
 		y = b;
@@ -18,7 +18,7 @@ Player::Player(Model *model,int &a=0,int &b=0) {
 }
 
 bool Player::moveTo(int &a,int &b) {
-	if (abs(a+b-x+y) == 1 && m->isEmpty(a,b)) {
+	if (abs(a+b-x+y) == 1 && m->getState(a,b) != GAME_WALL) {
 		m->setState(x,y,'0');
 		x = a;
 		y = b;
@@ -28,3 +28,8 @@ bool Player::moveTo(int &a,int &b) {
 	else
 		return false;
 }
+
+void Player::setBoard(Model *b) {
+	m = b;
+}
+
