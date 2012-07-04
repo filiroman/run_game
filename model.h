@@ -19,8 +19,10 @@ private:
 	list<Player> players;
 	bool checkRange(int &x,int &y);
 	void createWorld();
+	void createWalls();
+	void createPlayers(int &gamers, int &computers);
 public:
-	Model();
+	Model(Options *opt);
 	~Model();
 	bool addPlayer(Player &p);
 	bool isEmpty(int &x,int &y);

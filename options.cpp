@@ -51,6 +51,10 @@ settings *Options::getSettings() {
 	return s;
 }
 
+void Options::optionsScene() {
+	printf("Options !\n");
+}
+	
 Options::~Options() {
 	save();
 }

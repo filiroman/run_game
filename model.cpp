@@ -4,24 +4,48 @@
 	(c) roman filippov, 2012
 */
 #include <list>
+#include <ctime>
+#include <cstdlib>
 #include "model.h"
 #include "gameexception.h"
 #include "options.h"
+#include "player.h"
+#include "gamer.h"
+#include "ai.h"
 using std::list;
 
-
-Model::Model() {
+Model::Model(Options *opt) {
 	if (fsize<5)
 		throw GameException("Wrong field size");
 	b = NULL;
 	board = NULL;
+	options = opt;
 }
 
 bool Model::step() {
 	for(list<Player>::iterator it=players.begin(); it!=players.end(); ++it)
-		if(it->turn())
+		if(it->turn())		//Each player implements his own turn() method (ai or real gamer) return true if game is finished
 			return true;
 	return false;
+}
+
+void Model::createWalls() {
+	srand( time (NULL) );	
+	printf("Creating walls...\n");
+				// + check path availability of every player
+
+}
+
+void Model::createPlayers(int &gamers=1, int &computers=1) {
+	printf("Creating players...\n");
+	for (int i=0;i<gamers;++i) {
+		Gamer g(this,0,0);
+		players.push_back(g);
+	}
+	settings *st = options->getSettings();
+	for (int i=0;i<computers;++i) {
+		Ai a(this,st->size-1,st->size-1);
+	}		
 }
 
 void Model::createWorld() {

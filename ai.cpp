@@ -1,9 +1,11 @@
 /*
-	gamer (human player) model class
+	computer enemy model class
 	
 	(c) roman filippov, 2012
 */
 #include "ai.h"
+#include "model.h"
+#include "player.h"
 
 virtual void Ai::turn() {
 	int a,b;
@@ -13,3 +15,5 @@ virtual void Ai::turn() {
 	}
 	return;
 }
+
+Ai::Ai(Model *model,int &a=0,int &b=0) :Player(model,a,b) {};

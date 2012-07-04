@@ -4,6 +4,8 @@
 	(c) roman filippov, 2012
 */
 #include "gamer.h"
+#include "model.h"
+#include "player.h"
 
 virtual void Gamer::turn() {
 	int a,b;
@@ -13,4 +15,6 @@ virtual void Gamer::turn() {
 	}
 	return;
 }
+
+Gamer::Gamer(Model *model,int &a=0,int &b=0) :Player(model,a,b) {};
 

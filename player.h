@@ -14,8 +14,8 @@ private:
 	Model *m;
 	// - Something else (maybe health, e.t.c)
 public:
-	Player(int &a=0,int &b=0);			//Initialize player on (x,y) position;
-	bool MoveTo(int &a,int &b);
+	Player(Model *model,int &a=0,int &b=0);			//Initialize player on (x,y) position;
+	bool moveTo(int &a,int &b);
 	void setBoard(Model &b);
 	
 	int x()const {			//inline
@@ -28,8 +28,8 @@ public:
 	virtual void turn()=0;
 };
 
-inline void Player::setBoard(Model &b) {
-	m = &b;
+inline void Player::setBoard(Model *b) {
+	m = b;
 }
 
 #endif

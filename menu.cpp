@@ -21,5 +21,15 @@ Menu::Menu() {
 int Menu::show() {
 	for(vector<string>::iterator it = items.begin(); it!= items.end(); ++it)
 		printf("%s\n",it->c_str());
-		
+	int res;
+	scanf("%d",&res);
+	return res;		
+}
+
+void Menu::aboutScene() {
+	printf("About!\n");
+}
+
+void Menu::helpScene() {
+	printf("Help!\n");
 }
