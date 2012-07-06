@@ -6,34 +6,44 @@
 #ifndef _MODEL_H_
 #define _MODEL_H_
 #include <list>
+#include <map>
 #include "player.h"
 #include "gameexception.h"
 #include "options.h"
-#include "menu.h"
-#include "ai.h"
+//#include "menu.h"
+//#include "ai.h"
 #define GAME_WALL 30
 #define GAME_PLAYER 20
 #define GAME_EMPTY_CELL 10
+class Menu;
+class Ai;
 using std::list;
+using std::pair;
 
 class Model {
 private:
 	Options *options;
 	char *b,**board;		//Game Board
 	list<Player> players;
-	bool checkRange(int &x,int &y);
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
 public:
 	Model(Options *opt);
 	~Model();
+	bool checkRange(int &x,int &y);
 	bool addPlayer(Player &p);
 	int getState(int &x,int &y);
-	void setState(int &x,int &y,char &state);
+	void setState(int &x,int &y,char state);
 	bool step();
+	pair<int,int> getPlayerPosition();
 	friend class Ai;
+	friend class Application;
 };
+
+inline pair<int,int> Model::getPlayerPosition() {
+	return std::make_pair(players.begin()->getX(),players.begin()->getY());
+}
 
 inline bool Model::checkRange(int &x,int &y) {
 	settings *st = options->getSettings();
@@ -56,7 +66,7 @@ inline int Model::getState(int &x,int &y) {
 		throw new GameException("wrong coordinates to check");
 }
 
-inline void Model::setState(int &x,int &y,char &state) {
+inline void Model::setState(int &x,int &y,char state) {
 	if (checkRange(x,y))
 		board[x][y] = state;
 	else

@@ -6,11 +6,12 @@
 #ifndef _GAMER_H_
 #define _GAMER_H_
 #include "player.h"
-#include "model.h"
+//#include "model.h"
+class Model;
 
 class Gamer: public Player {
 public:
-	Gamer(Model *model,int &a=0,int &b=0);
+	Gamer(Model *model,int &a,int &b);
 	virtual void turn();
 };
 

@@ -26,8 +26,8 @@ void Options::toDefaults() {
 	}
 }
 
-bool Options::loadFromFile(const string &filename = "DEFAULT_FILENAME") {
-	FILE *f = fopen(filename,"rb");
+bool Options::loadFromFile(const string &filename) {
+	FILE *f = fopen(filename.c_str(),"rb");
 	assert (f != NULL);
 	s = new settings;
 	
@@ -39,7 +39,7 @@ bool Options::loadFromFile(const string &filename = "DEFAULT_FILENAME") {
 	return false;
 }
 
-void Options::save(const string &filename = "OPTIONS_FILENAME") {
+void Options::save(const string &filename) {
 	FILE *f = fopen(filename.c_str(),"wb");
 	assert(f != NULL);
 	

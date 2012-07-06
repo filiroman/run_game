@@ -4,13 +4,13 @@
 	(c) roman filippov, 2012
 */
 //#include <string>
+#include <cstdio>
 #include <vector>
 #include "menu.h"
 //using std::string;
 using std::vector;
 
 Menu::Menu() {
-	exit = false;
 	items.push_back("New Game");
 	items.push_back("Settings");
 	items.push_back("About");

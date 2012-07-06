@@ -23,7 +23,7 @@ private:
 public:
 	Options();
 	~Options();
-	void toDefault();
+	void toDefaults();
 	bool loadFromFile(const string &filename = "DEFAULT_FILENAME");	
 	void save(const string &filename = "OPTIONS_FILENAME");
 	settings *getSettings(); 

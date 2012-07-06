@@ -8,7 +8,7 @@
 class Model;
 
 class Player {
-private:
+protected:
 	int x,y;		//Position
 	Model *m;
 	// - Something else (maybe health, e.t.c)
@@ -24,7 +24,7 @@ public:
 		return y;
 	};
 		
-	virtual void turn()=0;
+	virtual void turn(){};
 };
 
 #endif

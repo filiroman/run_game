@@ -31,8 +31,8 @@ Application::~Application() {
 void Application::startGame() {
 	game->createWorld();
 	game->createWalls();
-	game->createPlayers(1,1);		//Create 1 real player (don't change!! not implemented yet) 
-											//and 1 computer player (may be changed)
+	game->createPlayers(1);		//Create 1 computer player (real player is also 1 now);
+											
 	
 	while(game->step()) {
 		//processing game
@@ -45,10 +45,10 @@ void Application::run() {
 		for (list<Model>::iterator it = games.begin(); it!= games.end(); ++it)
 			if (it->step())
 				it = games.erase(it);*/
-				
+	int choose = 0;			
 	//Main loop			
-	while ((int choose = menu->show()) != EXIT_GAME) {			//show() returns EXIT_GAME (define 0) when user press exit
-		switch (choose) :
+	while ((choose = menu->show()) != EXIT_GAME) {			//show() returns EXIT_GAME (define 0) when user press exit
+		switch (choose)
 		{
 			case NEW_GAME:
 				startGame();

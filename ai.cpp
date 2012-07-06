@@ -19,6 +19,16 @@ using std::vector;
 
 int near[] = {-1, 0, 1, 0, -1};
 
+//bool mycompare::operator() (const int& lhs, const int& rhs) const {
+//	return Ai::f(lhs)<Ai::f(rhs);
+//};
+
+//bool Ai::(*fn_pt)(int,int) = fncomp;
+
+mycompare::mycompare (Ai *b) {
+	a = b;
+}
+
 int Ai::h(const int &x) {
 	return abs(x/n - target_x) + abs(x%n - target_y);
 }
@@ -32,7 +42,7 @@ void Ai::A_star() {
 	g[x][y] = 0;
 	p[x][y] = -1;
 	while (!q.empty()) {
-		set<int, mycompare>::iterator it = q.end(); it--;
+		set<int, bool(*)(int,int)>::iterator it = q.end(); it--;
 		int v = *it;
 		q.erase(it);
 		int i = v/n, j = v%n;
@@ -69,7 +79,7 @@ myvec Ai::path() {
 	int k;
 	k = p[target_x][target_y];
 	myvec v;
-	v.push_back(end);
+	v.push_back(std::make_pair(target_x,target_y));
 	while (k != -1) {
 		v.push_back(std::make_pair(k/n,k%n));
 		k = p[k/n][k%n];
@@ -81,7 +91,7 @@ myvec Ai::path() {
 
 
 
-virtual void Ai::turn() {
+void Ai::turn() {
 	pair<int,int> a = m->getPlayerPosition();
 	target_x = a.first;
 	target_y = a.second;
@@ -92,6 +102,9 @@ virtual void Ai::turn() {
 
 Ai::Ai(Model *model,int &a,int &b) :Player(model,a,b) {
 	//settings *st = model->options->getSettings();
+//	fn_pt = (bool(*)(int,int))&Ai::fncomp;
+	//q = q(fn_pt);
+	
 	n = (m->options->getSettings()).size;
 	used = new bool* [n];
 	for (int i=0;i<n;++i)

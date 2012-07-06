@@ -3,6 +3,7 @@
 	
 	(c) roman filippov, 2012
 */
+#include <cstdlib>
 #include "player.h"
 #include "model.h"
 #include "gameexception.h"

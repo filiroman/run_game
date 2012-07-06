@@ -7,9 +7,13 @@
 #define _APPLICATION_H_
 #include <SFML/Window.hpp>
 #include <list>
-#include "model.h"
-#include "menu.h"
-#include "options.h"
+//#include "model.h"
+//#include "menu.h"
+//#include "options.h"
+class Model;
+class Menu;
+class Options;
+
 using std::list;
 
 class Application: public sf::Window {
