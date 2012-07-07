@@ -13,7 +13,7 @@ protected:
 	Model *m;
 	// - Something else (maybe health, e.t.c)
 public:
-	Player(Model *model,int &a,int &b);			//Initialize player on (a,b) position;
+	Player(Model *model,int a,int b);			//Initialize player on (a,b) position;
 	bool moveTo(int &a,int &b);
 	void setBoard(Model *b);
 	
@@ -24,7 +24,7 @@ public:
 		return y;
 	};
 		
-	virtual void turn(){};
+	virtual bool turn(){};
 };
 
 #endif

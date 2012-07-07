@@ -8,14 +8,15 @@
 #include "model.h"
 #include "player.h"
 
-void Gamer::turn() {
+bool Gamer::turn() {
 	int a,b;
 	scanf("%d%d",&a,&b);
 	while (!moveTo(a,b)) {
 		scanf("%d%d",&a,&b);
 	}
 	printf("%d %d \n",a,b);
+	return false; 		//temporarily
 }
 
-Gamer::Gamer(Model *model,int &a,int &b) :Player(model,a,b) {};
+Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {};
 

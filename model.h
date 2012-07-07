@@ -33,7 +33,7 @@ public:
 	~Model();
 	bool checkRange(int &x,int &y);
 	bool addPlayer(Player &p);
-	int getState(int &x,int &y);
+	int getState(int x,int y);
 	void setState(int &x,int &y,char state);
 	bool step();
 	pair<int,int> getPlayerPosition();
@@ -53,7 +53,7 @@ inline bool Model::checkRange(int &x,int &y) {
 	return true;
 }
 
-inline int Model::getState(int &x,int &y) {
+inline int Model::getState(int x,int y) {
 	if (checkRange(x,y)) {
 		if (board[x][y] == '0')
 			return GAME_EMPTY_CELL;

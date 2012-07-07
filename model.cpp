@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <map>
+#include <cstdio>
 #include "model.h"
 #include "gameexception.h"
 #include "options.h"
@@ -17,15 +18,11 @@ using std::list;
 using std::pair;
 
 Model::Model(Options *opt) {
-	if (fsize<5)
-		throw GameException("Wrong field size");
+//	if (fsize<5)												//ToDo: Check that in options
+//		throw GameException("Wrong field size");
 	b = NULL;
 	board = NULL;
 	options = opt;
-}
-
-pair<int,int> Model::getPlayerPosition() {
-	return std::make_pair(players.begin()->getX(),players.begin()->getY());
 }
 
 bool Model::step() {
@@ -37,39 +34,42 @@ bool Model::step() {
 
 void Model::createWalls() {
 	srand( time (NULL) );	
-	printf("Creating walls...\n");
-
-
+	printf("Creating walls...");
+	
+	printf("Done\n");
 }
 
-void Model::createPlayers(int computers=1) {
+void Model::createPlayers(int computers) {
 	printf("Creating players...\n");
 
 	Gamer g(this,0,0);				
-	addPlayer(g);									
+	//addPlayer(g);									
 
-	settings *st = options->getSettings();
+	/*settings *st = options->getSettings();
 	for (int i=0;i<computers;++i) {
-		Ai a(this,st.size-1-i,st.size-1);
+		Ai a(const_cast<Model*>(this),st->size-1-i,st->size-1);
 		addPlayer(a);
-	}		
+	}	*/	
 					// + check path availability of every player
+					
+	printf("Done\n");
 }
 
 void Model::createWorld() {
-	printf("Creating world...\n");
+	printf("Creating world...");
 
 	settings *st = options->getSettings();
-	int FIELD_SIZE = st.size;
+	int FIELD_SIZE = st->size;
 	
-	board = new int* [FIELD_SIZE];							//Creating array for 2 new
-	b = new int [FIELD_SIZE*FIELD_SIZE];
+	board = new char* [FIELD_SIZE];							//Creating array for 2 new
+	b = new char [FIELD_SIZE*FIELD_SIZE];
 	for(int i=0;i<FIELD_SIZE;++i)
 		board[i] = &b[FIELD_SIZE*i];
 		
 	for(int i=0;i<FIELD_SIZE;i++)
 		for(int j=0;j<FIELD_SIZE;j++)		
 			board[i][j] = '0';
+	printf("Done\n");
 }
 
 Model::~Model() {
@@ -81,7 +81,7 @@ Model::~Model() {
 
 bool Model::addPlayer(Player &p) {
 	if (getState(p.getX(),p.getY()) == GAME_EMPTY_CELL) {
-		b[p.getX()][p.getY()] = '1';
+		board[p.getX()][p.getY()] = '1';
 		p.setBoard(this);
 		players.push_back(p);
 		return true;

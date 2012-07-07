@@ -25,25 +25,27 @@ int near[] = {-1, 0, 1, 0, -1};
 
 //bool Ai::(*fn_pt)(int,int) = fncomp;
 
-mycompare::mycompare (Ai *b) {
-	a = b;
+//mycompare::mycompare (Ai *b) {
+//	a = b;
+//}
+
+int Ai::h(int &x,int &y) {
+	//return abs(x/n - target_x) + abs(x%n - target_y);
+	return abs(x - target_x) + abs(y - target_y);
 }
 
-int Ai::h(const int &x) {
-	return abs(x/n - target_x) + abs(x%n - target_y);
-}
-
-int Ai::f(const int &x) {
-	return g[x/n][x%n] + h(x);
+int Ai::f(int &x,int &y) {
+	//return g[x/n][x%n] + h(x);
+	return g[x][y] + h(x,y);
 }
 
 void Ai::A_star() {
-	q.insert(x*n+y);
+	q.insert(std::make_pair(x*n+y,f(x,y)));
 	g[x][y] = 0;
 	p[x][y] = -1;
 	while (!q.empty()) {
-		set<int, bool(*)(int,int)>::iterator it = q.end(); it--;
-		int v = *it;
+		set<pair<int,int>,mycompare>::iterator it = q.end(); it--;
+		int v = (*it).first;
 		q.erase(it);
 		int i = v/n, j = v%n;
 		used[i][j] = true;
@@ -58,10 +60,10 @@ void Ai::A_star() {
 				continue;
 			
 			bool better;
-			set<int, Ai>::iterator ti = q.find(h*n+l);
-			if (ti == q.end()) {
+		 	it = q.find(std::make_pair(h*n+l,f(h,l)));
+			if (it == q.end()) {
 				p[h][l] = i*n+j;
-				q.insert(h*n+l);	
+				q.insert(std::make_pair(h*n+l,f(h,l)));
 			}
 			else {
 				g[i][j]+1 < g[h][l] ? better=true : better=false;
@@ -91,21 +93,25 @@ myvec Ai::path() {
 
 
 
-void Ai::turn() {
+bool Ai::turn() {
 	pair<int,int> a = m->getPlayerPosition();
 	target_x = a.first;
 	target_y = a.second;
 	A_star();
 	myvec b = path();
 	moveTo(b[0].first,b[0].second);
+	if (b[0].first == target_x && b[0].second == target_y) return true; 
+	else return false;
 }
 
-Ai::Ai(Model *model,int &a,int &b) :Player(model,a,b) {
+Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 	//settings *st = model->options->getSettings();
-//	fn_pt = (bool(*)(int,int))&Ai::fncomp;
+	//	fn_pt = (bool(*)(int,int))&Ai::fncomp;
 	//q = q(fn_pt);
 	
-	n = (m->options->getSettings()).size;
+	settings *st = model->options->getSettings();
+	n = st->size;
+	
 	used = new bool* [n];
 	for (int i=0;i<n;++i)
 		used[i] = new bool[n];
@@ -115,6 +121,7 @@ Ai::Ai(Model *model,int &a,int &b) :Player(model,a,b) {
 	g = new int* [n];
 	for (int i=0;i<n;++i)
 		g[i] = new int[n];
+		
 	memset(used,0,sizeof(bool)*n*n);
 	memset(p,0,sizeof(int)*n*n);
 	memset(g,0,sizeof(int)*n*n);	

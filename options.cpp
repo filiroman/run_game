@@ -28,7 +28,7 @@ void Options::toDefaults() {
 
 bool Options::loadFromFile(const string &filename) {
 	FILE *f = fopen(filename.c_str(),"rb");
-	assert (f != NULL);
+	if (f == NULL) return false;
 	s = new settings;
 	
 	if (fread(s,sizeof(settings),1,f) == 1) {
