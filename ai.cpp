@@ -5,17 +5,12 @@
 */
 #include <cstdio>
 #include <cstring>
-#include <set>
-#include <map>
-#include <vector>
 #include <algorithm>
 #include "ai.h"
 #include "model.h"
 #include "player.h"
 #include "options.h"
-using std::set;
-using std::pair;
-using std::vector;
+
 
 int near[] = {-1, 0, 1, 0, -1};
 
@@ -29,18 +24,21 @@ int near[] = {-1, 0, 1, 0, -1};
 //	a = b;
 //}
 
-int Ai::h(int &x,int &y) {
+int Ai::h(int x,int y) {
 	//return abs(x/n - target_x) + abs(x%n - target_y);
 	return abs(x - target_x) + abs(y - target_y);
 }
 
-int Ai::f(int &x,int &y) {
+int Ai::f(int x,int y) {
 	//return g[x/n][x%n] + h(x);
 	return g[x][y] + h(x,y);
 }
 
 void Ai::A_star() {
-	q.insert(std::make_pair(x*n+y,f(x,y)));
+	printf("%d\n",used[0][0]);
+	//pair<int,int> abc = std::make_pair(x*n+y,f(x,y));
+	//printf("%d | %d \n",abc.first,abc.second);
+	/*q.insert(std::make_pair(x*n+y,f(x,y)));
 	g[x][y] = 0;
 	p[x][y] = -1;
 	while (!q.empty()) {
@@ -74,7 +72,7 @@ void Ai::A_star() {
 				g[h][l] = g[i][j]+1;
 			}					
 		}
-	}	
+	}	*/
 }
 
 myvec Ai::path() {
@@ -98,10 +96,13 @@ bool Ai::turn() {
 	target_x = a.first;
 	target_y = a.second;
 	A_star();
-	myvec b = path();
-	moveTo(b[0].first,b[0].second);
-	if (b[0].first == target_x && b[0].second == target_y) return true; 
-	else return false;
+//	myvec b = path();
+//	moveTo(b[0].first,b[0].second);
+//	printf("Ai moves to: %d %d \n",b[0].first,b[0].second);
+//	if (b[0].first == target_x && b[0].second == target_y) 
+//		return true; 
+//	else 
+//		return false;
 }
 
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
@@ -113,18 +114,27 @@ Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 	n = st->size;
 	
 	used = new bool* [n];
-	for (int i=0;i<n;++i)
-		used[i] = new bool[n];
 	p = new int* [n];
-	for (int i=0;i<n;++i)
-		p[i] = new int[n];
 	g = new int* [n];
-	for (int i=0;i<n;++i)
+	for (int i=0;i<n;++i) {
+		used[i] = new bool[n];
+		p[i] = new int[n];
 		g[i] = new int[n];
-		
+	}		
 	memset(used,0,sizeof(bool)*n*n);
 	memset(p,0,sizeof(int)*n*n);
 	memset(g,0,sizeof(int)*n*n);	
 };
+
+Ai::~Ai() {
+	for (int i=0;i<n;++i) {
+		delete[] g[i];
+		delete[] p[i];
+		delete[] used[i];
+	}
+	delete[] g;
+	delete[] p;
+	delete[] used;
+}
 
 

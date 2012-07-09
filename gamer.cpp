@@ -6,7 +6,6 @@
 #include <cstdio>
 #include "gamer.h"
 #include "model.h"
-#include "player.h"
 
 bool Gamer::turn() {
 	int a,b;
@@ -14,7 +13,7 @@ bool Gamer::turn() {
 	while (!moveTo(a,b)) {
 		scanf("%d%d",&a,&b);
 	}
-	printf("%d %d \n",a,b);
+	printf("Gamer moves to: %d %d \n",a,b);
 	return false; 		//temporarily
 }
 

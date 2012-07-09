@@ -5,8 +5,8 @@
 */
 #ifndef _OPTIONS_H_
 #define _OPTIONS_H_
-#define OPTIONS_FILENAME config.rgc
-#define DEFAULT_FILENAME default.rgc
+#define OPTIONS_FILENAME "config.rgc"
+#define DEFAULT_FILENAME "default.rgc"
 #include <string>
 using std::string;
 struct settings {

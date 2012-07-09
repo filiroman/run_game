@@ -4,12 +4,11 @@
 	(c) roman filippov, 2012
 */
 #include <SFML/Window.hpp>
-#include <list>
+#include <cstdio>
 #include "application.h"
 #include "model.h"
 #include "options.h"
 #include "menu.h"
-using std::list;
 
 Application::Application() {
 	options = new Options();
@@ -29,14 +28,16 @@ Application::~Application() {
 }*/
 
 void Application::startGame() {
+	printf("Starting game\n");
 	game->createWorld();
 	game->createWalls();
 	game->createPlayers(1);		//Create 1 computer player (real player is also 1 now);
+	
+	printf("Let's Go!\n");
 											
 	
-	while(game->step()) {
-		//processing game
-	}	
+	while(game->step());
+	
 }
 
 void Application::run() {

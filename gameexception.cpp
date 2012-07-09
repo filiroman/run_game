@@ -6,5 +6,4 @@
 
 #include "gameexception.h"
 
-GameException::GameException(const std::string &arg):std::logic_error(arg){
-}
+GameException::GameException(const std::string &arg):std::logic_error(arg){ }

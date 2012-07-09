@@ -3,32 +3,22 @@
 	
 	(c) roman filippov, 2012
 */
-#include <list>
 #include <ctime>
 #include <cstdlib>
-#include <map>
 #include <cstdio>
 #include "model.h"
-#include "gameexception.h"
-#include "options.h"
-#include "player.h"
 #include "gamer.h"
 #include "ai.h"
-using std::list;
-using std::pair;
 
-Model::Model(Options *opt) {
+Model::Model(Options *opt) : b(NULL), board(NULL), options(opt) {
 //	if (fsize<5)												//ToDo: Check that in options
 //		throw GameException("Wrong field size");
-	b = NULL;
-	board = NULL;
-	options = opt;
 }
 
 bool Model::step() {
-	for(list<Player>::iterator it=players.begin(); it!=players.end(); ++it)
-		if(it->turn())		//Each player implements his own turn() method (ai or real gamer) return true if game is finished
-			return true;
+	for(list<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it)
+		if(it->get()->turn())		//Each player implements his own turn() method (ai or real gamer) 
+			return true;		//return true if game is finished
 	return false;
 }
 
@@ -40,16 +30,17 @@ void Model::createWalls() {
 }
 
 void Model::createPlayers(int computers) {
-	printf("Creating players...\n");
+	printf("Creating players...");
 
-	Gamer g(this,0,0);				
-	//addPlayer(g);									
+	addPlayer(new Gamer(this,0,0));									
+	//printf("%d %d\n",players.begin()->getX(),players.begin()->getY());
 
-	/*settings *st = options->getSettings();
+	settings *st = options->getSettings();
+	//printf("%d\n",st->size);
 	for (int i=0;i<computers;++i) {
-		Ai a(const_cast<Model*>(this),st->size-1-i,st->size-1);
-		addPlayer(a);
-	}	*/	
+		//Ai a(this,st->size-1-i,st->size-1);
+		addPlayer(new Ai(this,st->size-1-i,st->size-1));
+	}
 					// + check path availability of every player
 					
 	printf("Done\n");
@@ -79,11 +70,11 @@ Model::~Model() {
 		delete [] board;
 }
 
-bool Model::addPlayer(Player &p) {
-	if (getState(p.getX(),p.getY()) == GAME_EMPTY_CELL) {
-		board[p.getX()][p.getY()] = '1';
-		p.setBoard(this);
-		players.push_back(p);
+bool Model::addPlayer(Player *p) {
+	if (getState(p->getX(),p->getY()) == GAME_EMPTY_CELL) {
+		board[p->getX()][p->getY()] = '1';
+		p->setBoard(this);
+		players.push_back(PlayerPtr(p));
 		return true;
 	}
 	return false;

@@ -8,11 +8,11 @@
 #include "model.h"
 #include "gameexception.h"
 
-Player::Player(Model *model,int a,int b) {
+Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 	//if(m->checkRange(a,b)) {
-		x = a;
-		y = b;
-		m = model;
+//		x = a;
+//		y = b;
+//		m = model;
 	//}
 	//else
 		//throw new GameException("wrong player position in constructor");

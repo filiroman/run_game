@@ -9,11 +9,12 @@
 #include "options.h"
 
 Options::Options() {
-	toDefaults();	
+	if (!loadFromFile(OPTIONS_FILENAME))
+		toDefaults();	
 }
 
 void Options::toDefaults() {
-	if (!loadFromFile("DEFAULT_FILENAME")) {
+	if (!loadFromFile(DEFAULT_FILENAME)) {
 		
 		s = new settings;
 		s->size = 10;
@@ -22,7 +23,7 @@ void Options::toDefaults() {
 		s->fullscreen = 0;
 		s->edges = 1;
 		
-		save("DEFAULT_FILENAME");
+		save(DEFAULT_FILENAME);
 	}
 }
 

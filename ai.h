@@ -17,28 +17,25 @@ using std::pair;
 
 typedef vector<pair<int,int> > myvec;
 
-//bool fncomp (int lhs, int rhs,Ai *a) { return (a->f(lhs))<(a->f(rhs)); };
-//bool(*fn_pt)(int,int,Ai) = fncomp
-
-
 class Ai: public Player {
 private:	
 	class mycompare {									//Compare class
 	public:
 		bool operator() (const pair<int,int>& lhs, const pair<int,int>& rhs) const {
-			return lhs.second<rhs.second;
+			return lhs.second < rhs.second;
 		};
 	};
 	int target_x, target_y, n;
 	bool **used;
 	int **p,**g;					//for A* (used, parents, g(x) )
-	set<pair<int,int>,mycompare> q;
-	int h(int &x,int &y);
-	int f(int &x,int &y);
+	set<pair<int, int>, mycompare> q;
+	int h(int x,int y);
+	int f(int x,int y);
 	void A_star();
 	myvec path();
 public:
 	Ai(Model *model,int a,int b);
+	~Ai();
 	virtual bool turn();
 };
 

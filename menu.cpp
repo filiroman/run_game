@@ -5,10 +5,7 @@
 */
 //#include <string>
 #include <cstdio>
-#include <vector>
 #include "menu.h"
-//using std::string;
-using std::vector;
 
 Menu::Menu() {
 	items.push_back("New Game");

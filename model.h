@@ -7,6 +7,7 @@
 #define _MODEL_H_
 #include <list>
 #include <map>
+#include <boost/shared_ptr.hpp>
 #include "player.h"
 #include "gameexception.h"
 #include "options.h"
@@ -19,12 +20,13 @@ class Menu;
 class Ai;
 using std::list;
 using std::pair;
+typedef boost::shared_ptr<Player> PlayerPtr;
 
 class Model {
 private:
 	Options *options;
 	char *b,**board;		//Game Board
-	list<Player> players;
+	list<PlayerPtr> players;
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
@@ -32,7 +34,7 @@ public:
 	Model(Options *opt);
 	~Model();
 	bool checkRange(int &x,int &y);
-	bool addPlayer(Player &p);
+	bool addPlayer(Player *p);
 	int getState(int x,int y);
 	void setState(int &x,int &y,char state);
 	bool step();
@@ -42,7 +44,7 @@ public:
 };
 
 inline pair<int,int> Model::getPlayerPosition() {
-	return std::make_pair(players.begin()->getX(),players.begin()->getY());
+	return std::make_pair(players.begin()->get()->getX(),players.begin()->get()->getY());
 }
 
 inline bool Model::checkRange(int &x,int &y) {
