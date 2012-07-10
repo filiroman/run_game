@@ -1,5 +1,17 @@
-run_game 
+run_game v 0.1
+console test version
 ========
 
 simple game where you need to escape from enemies. written in c++
+
+to make you need sfml-1.6 library, which you can download on http://sfml-dev.org/
+
+after that, just cd to the sources folder and copy to terminal:
+
+g++ model.cpp ai.cpp application.cpp player.cpp gameexception.cpp gamer.cpp main.cpp menu.cpp options.cpp -o main -lsfml-window -lsfml-system
+
+then ./main to run the game
+
+(c) 2012, Filippov Roman
+
 
