@@ -1,4 +1,5 @@
-run_game
+run_game v. 0.1
+console version of game
 ========
 
 simple game where you need to escape from enemies. written in c++
