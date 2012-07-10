@@ -34,19 +34,29 @@ int Ai::f(int x,int y) {
 	return g[x][y] + h(x,y);
 }
 
-void Ai::A_star() {
-	printf("%d\n",used[0][0]);
-	//pair<int,int> abc = std::make_pair(x*n+y,f(x,y));
-	//printf("%d | %d \n",abc.first,abc.second);
-	/*q.insert(std::make_pair(x*n+y,f(x,y)));
+void Ai::clear() {
+	for (int i=0;i<n;++i) {
+		memset(used[i],0,sizeof(bool)*n);
+		memset(p[i],0,sizeof(int)*n);
+		memset(g[i],0,sizeof(int)*n);
+	}
+	q.clear();
+}
+
+void Ai::A_star() {											//A star realisation for Ai turn
+	clear();			//cleaning arrays and set before every turn
+
+	q.insert(std::make_pair(x*n+y,f(x,y)));	//pushing current ai pos to set (pos,f(x,y))
 	g[x][y] = 0;
 	p[x][y] = -1;
-	while (!q.empty()) {
-		set<pair<int,int>,mycompare>::iterator it = q.end(); it--;
-		int v = (*it).first;
+	while (!q.empty()) {	
+		set<pair<int,int>,mycompare>::iterator it = q.end(); it--;		//set sort all pairs of (f1>f2), so in q.end()-- 
+		int v = it->first;															//would be elem with minimum f
+																					//see ai.h mycompare class for more		
 		q.erase(it);
 		int i = v/n, j = v%n;
 		used[i][j] = true;
+
 		if (i == target_x && j == target_y)
 			return;
 		
@@ -72,10 +82,10 @@ void Ai::A_star() {
 				g[h][l] = g[i][j]+1;
 			}					
 		}
-	}	*/
+	}	
 }
 
-myvec Ai::path() {
+myvec Ai::path() {							//restore path from parents array
 	int k;
 	k = p[target_x][target_y];
 	myvec v;
@@ -95,14 +105,17 @@ bool Ai::turn() {
 	pair<int,int> a = m->getPlayerPosition();
 	target_x = a.first;
 	target_y = a.second;
+	
 	A_star();
-//	myvec b = path();
-//	moveTo(b[0].first,b[0].second);
-//	printf("Ai moves to: %d %d \n",b[0].first,b[0].second);
-//	if (b[0].first == target_x && b[0].second == target_y) 
-//		return true; 
-//	else 
-//		return false;
+	myvec b = path();							
+	moveTo(b[1].first,b[1].second);			//moving
+	
+	printf("Ai moves to: %d %d \n",b[1].first,b[1].second);
+//	printf("%d | %d | %d | %d \n",b[1].first,b[1].second,target_x,target_y);
+	if (b[1].first == target_x && b[1].second == target_y) 
+		return true; 
+	else 
+		return false;
 }
 
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
@@ -117,13 +130,10 @@ Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 	p = new int* [n];
 	g = new int* [n];
 	for (int i=0;i<n;++i) {
-		used[i] = new bool[n];
-		p[i] = new int[n];
-		g[i] = new int[n];
-	}		
-	memset(used,0,sizeof(bool)*n*n);
-	memset(p,0,sizeof(int)*n*n);
-	memset(g,0,sizeof(int)*n*n);	
+		used[i] = new bool[n]();
+		p[i] = new int[n]();
+		g[i] = new int[n]();
+	}			
 };
 
 Ai::~Ai() {
@@ -135,6 +145,7 @@ Ai::~Ai() {
 	delete[] g;
 	delete[] p;
 	delete[] used;
+	printf("Ai Deleted!\n");
 }
 
 

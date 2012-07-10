@@ -22,7 +22,7 @@ private:
 	class mycompare {									//Compare class
 	public:
 		bool operator() (const pair<int,int>& lhs, const pair<int,int>& rhs) const {
-			return lhs.second < rhs.second;
+			return lhs.second > rhs.second;
 		};
 	};
 	int target_x, target_y, n;
@@ -33,6 +33,7 @@ private:
 	int f(int x,int y);
 	void A_star();
 	myvec path();
+	void clear();
 public:
 	Ai(Model *model,int a,int b);
 	~Ai();

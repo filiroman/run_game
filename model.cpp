@@ -10,16 +10,16 @@
 #include "gamer.h"
 #include "ai.h"
 
-Model::Model(Options *opt) : b(NULL), board(NULL), options(opt) {
+Model::Model(Options *opt) : board(NULL), options(opt) {
 //	if (fsize<5)												//ToDo: Check that in options
 //		throw GameException("Wrong field size");
 }
 
 bool Model::step() {
 	for(list<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it)
-		if(it->get()->turn())		//Each player implements his own turn() method (ai or real gamer) 
-			return true;		//return true if game is finished
-	return false;
+		if(it->get()->turn())						//Each player implements his own turn() method (ai or real gamer) 
+			return false;								//return false if game is finished
+	return true;
 }
 
 void Model::createWalls() {
@@ -52,10 +52,9 @@ void Model::createWorld() {
 	settings *st = options->getSettings();
 	int FIELD_SIZE = st->size;
 	
-	board = new char* [FIELD_SIZE];							//Creating array for 2 new
-	b = new char [FIELD_SIZE*FIELD_SIZE];
+	board = new char* [FIELD_SIZE];							//Creating map array
 	for(int i=0;i<FIELD_SIZE;++i)
-		board[i] = &b[FIELD_SIZE*i];
+		board[i] = new char [FIELD_SIZE]();
 		
 	for(int i=0;i<FIELD_SIZE;i++)
 		for(int j=0;j<FIELD_SIZE;j++)		
@@ -64,10 +63,11 @@ void Model::createWorld() {
 }
 
 Model::~Model() {
-	if (b != NULL)
-		delete [] b;
-	if (board != NULL)
-		delete [] board;
+	settings *st = options->getSettings();
+	for(int i=0;i<st->size;++i)
+		delete[] board[i];
+
+	delete[] board;
 }
 
 bool Model::addPlayer(Player *p) {

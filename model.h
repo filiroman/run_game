@@ -25,7 +25,7 @@ typedef boost::shared_ptr<Player> PlayerPtr;
 class Model {
 private:
 	Options *options;
-	char *b,**board;		//Game Board
+	char **board;		//Game Board
 	list<PlayerPtr> players;
 	void createWorld();
 	void createWalls();

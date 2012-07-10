@@ -13,11 +13,10 @@
 Application::Application() {
 	options = new Options();
 	menu = new Menu();	
-	game = new Model(options);
 }
 
 Application::~Application() {
-	delete game;
+	//delete game;						//Also delete in startGame when game ended
 	delete menu;
 	delete options;
 }
@@ -29,6 +28,9 @@ Application::~Application() {
 
 void Application::startGame() {
 	printf("Starting game\n");
+	
+	game = new Model(options);
+	
 	game->createWorld();
 	game->createWalls();
 	game->createPlayers(1);		//Create 1 computer player (real player is also 1 now);
@@ -37,7 +39,8 @@ void Application::startGame() {
 											
 	
 	while(game->step());
-	
+	printf("Game is finished!\n");
+	delete game;	
 }
 
 void Application::run() {
