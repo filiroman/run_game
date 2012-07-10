@@ -1,5 +1,4 @@
-run_game v 0.1
-console step-turn release
+run_game 
 ========
 
 simple game where you need to escape from enemies. written in c++
