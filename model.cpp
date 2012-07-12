@@ -10,15 +10,19 @@
 #include "gamer.h"
 #include "ai.h"
 
-Model::Model(Options *opt) : board(NULL), options(opt) {
+Model::Model(Options *opt) : sf::Window(sf::VideoMode(800, 600, 32), "Run Game"), board(NULL), options(opt) {
 //	if (fsize<5)												//ToDo: Check that in options
 //		throw GameException("Wrong field size");
 }
 
 bool Model::step() {
-	for(list<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it)
-		if(it->get()->turn())						//Each player implements his own turn() method (ai or real gamer) 
+	for(list<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it) {
+		if(it->get()->turn()) {						//Each player implements his own turn() method (ai or real gamer) 
+			Display();
 			return false;								//return false if game is finished
+		}
+		Display();
+	}
 	return true;
 }
 

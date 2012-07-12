@@ -34,7 +34,7 @@ private:
 public:
 	Model(Options *opt);
 	~Model();
-	bool checkRange(int &x,int &y);
+	bool checkRange(const int &x,const int &y);
 	bool addPlayer(Player *p);
 	int getState(int x,int y);
 	void setState(int &x,int &y,char state);
@@ -48,7 +48,7 @@ inline pair<int,int> Model::getPlayerPosition() {
 	return std::make_pair(players.begin()->get()->getX(),players.begin()->get()->getY());
 }
 
-inline bool Model::checkRange(int &x,int &y) {
+inline bool Model::checkRange(const int &x,const int &y) {
 	settings *st = options->getSettings();
 	int FIELD_SIZE = st->size;
 	if (x<0 || y<0 || x>=FIELD_SIZE || y>=FIELD_SIZE)
