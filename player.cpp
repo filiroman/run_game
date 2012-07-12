@@ -19,7 +19,7 @@ Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 		//throw new GameException("wrong player position in constructor");
 }
 
-bool Player::moveTo(int &a,int &b) {
+bool Player::moveTo(const int a,const int b) {
 	if (abs(a+b-x-y) == 1 && m->getState(a,b) != GAME_WALL) {
 		m->setState(x,y,'0');
 		x = a;

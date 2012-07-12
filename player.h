@@ -14,7 +14,7 @@ protected:
 	// - Something else (maybe health, e.t.c)
 public:
 	Player(Model *model,int a,int b);			//Initialize player on (a,b) position;
-	bool moveTo(int &a,int &b);
+	bool moveTo(const int a,const int b);
 	void setBoard(Model *b);
 	
 	int getX()const {			//inline
