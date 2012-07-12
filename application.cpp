@@ -25,7 +25,7 @@ Application::~Application() {
 	games.push_back(m);
 }*/
 
-void Application::startGame() {
+bool Application::startGame() {
 	printf("Starting game\n");
 	
 	game = new Model(options);

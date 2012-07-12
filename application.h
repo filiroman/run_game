@@ -26,7 +26,7 @@ public:
 	~Application();
 	//void newGame();
 	void run();	
-	void startGame();
+	bool startGame();
 };
 
 #endif
