@@ -20,13 +20,14 @@ Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 }
 
 bool Player::moveTo(const int a,const int b) {
-	if (abs(a+b-x-y) == 1 && m->getState(a,b) != GAME_WALL) {
-		m->setState(x,y,'0');
-		x = a;
-		y = b;
-		m->setState(x,y,'1');
-		return true;
-	}
+	if (abs(a+b-x-y) == 1 && m->checkRange(a,b))
+		if (m->getState(a,b) != GAME_WALL) {
+			m->setState(x,y,'0');
+			x = a;
+			y = b;
+			m->setState(x,y,'1');
+			return true;
+		}
 	else
 		return false;
 }

@@ -1,3 +1,4 @@
+
 run_game v 0.1
 console test version
 ========
@@ -13,5 +14,4 @@ g++ model.cpp ai.cpp application.cpp player.cpp gameexception.cpp gamer.cpp main
 then ./main to run the game
 
 (c) 2012, Filippov Roman
-
 
