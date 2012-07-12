@@ -24,7 +24,7 @@ bool Gamer::turn() {
 		else if ((Event.Type == sf::Event::KeyPressed) && (Event.Key.Code == sf::Key::Right))
 			moveTo(x,y+1);
 		const sf::Input& Input = m->GetInput();
-		if (Input.IsKeyDown(sf::Key::Left)) printf("YEEEAAAAAH\n");
+		if (Input.IsKeyDown(sf::Key::Left))
 		
 //		while (!moveTo(a,b)) {
 //			scanf("%d%d",&a,&b);
