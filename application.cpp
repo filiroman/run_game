@@ -3,7 +3,6 @@
 	
 	(c) roman filippov, 2012
 */
-#include <SFML/Window.hpp>
 #include <cstdio>
 #include "application.h"
 #include "model.h"

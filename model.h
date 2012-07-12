@@ -8,6 +8,7 @@
 #include <list>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <SFML/Window.hpp>
 #include "player.h"
 #include "gameexception.h"
 #include "options.h"
@@ -22,7 +23,7 @@ using std::list;
 using std::pair;
 typedef boost::shared_ptr<Player> PlayerPtr;
 
-class Model {
+class Model: public sf::Window {
 private:
 	Options *options;
 	char **board;		//Game Board
