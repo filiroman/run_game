@@ -24,7 +24,7 @@ public:
 		return y;
 	};
 		
-	virtual bool turn(){};
+	virtual int turn(){};
 };
 
 #endif

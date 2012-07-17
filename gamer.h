@@ -12,7 +12,7 @@ class Model;
 class Gamer: public Player {
 public:
 	Gamer(Model *model,int a,int b);
-	virtual bool turn();
+	virtual int turn();
 };
 
 #endif

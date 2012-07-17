@@ -37,7 +37,7 @@ private:
 public:
 	Ai(Model *model,int a,int b);
 	~Ai();
-	virtual bool turn();
+	virtual int turn();
 };
 
 #endif
