@@ -3,6 +3,7 @@
 	
 	(c) roman filippov, 2012
 */
+#include <cstdlib>
 #include <cstdio>
 #include "application.h"
 #include "gameexception.h"

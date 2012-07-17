@@ -10,27 +10,16 @@
 #include "model.h"
 #include "player.h"
 #include "options.h"
+#include "view.h"
 
 
 int near[] = {-1, 0, 1, 0, -1};
 
-//bool mycompare::operator() (const int& lhs, const int& rhs) const {
-//	return Ai::f(lhs)<Ai::f(rhs);
-//};
-
-//bool Ai::(*fn_pt)(int,int) = fncomp;
-
-//mycompare::mycompare (Ai *b) {
-//	a = b;
-//}
-
 int Ai::h(int x,int y) {
-	//return abs(x/n - target_x) + abs(x%n - target_y);
 	return abs(x - target_x) + abs(y - target_y);
 }
 
 int Ai::f(int x,int y) {
-	//return g[x/n][x%n] + h(x);
 	return g[x][y] + h(x,y);
 }
 
@@ -101,7 +90,7 @@ myvec Ai::path() {							//restore path from parents array
 
 
 
-bool Ai::turn() {
+int Ai::turn() {
 	pair<int,int> a = m->getPlayerPosition();
 	target_x = a.first;
 	target_y = a.second;
@@ -112,10 +101,11 @@ bool Ai::turn() {
 	
 	printf("Ai moves to: %d %d \n",b[1].first,b[1].second);
 //	printf("%d | %d | %d | %d \n",b[1].first,b[1].second,target_x,target_y);
+
 	if (b[1].first == target_x && b[1].second == target_y) 
-		return true; 
+		return m->view->gameOverScene("You Lose!");
 	else 
-		return false;
+		return 1;
 }
 
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {

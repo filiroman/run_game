@@ -5,40 +5,56 @@
 */
 #ifndef _MODEL_H_
 #define _MODEL_H_
-#include <list>
+#include <vector>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <string>
 #include "player.h"
+#include "view.h"
 #include "gameexception.h"
 #include "options.h"
-//#include "menu.h"
-//#include "ai.h"
+
+/* map cells state defines (returned by model->getState)*/
 #define GAME_WALL 30
 #define GAME_PLAYER 20
 #define GAME_EMPTY_CELL 10
+
+/* defines Game window header */
+#define GAME_WINDOW_NAME "Run Game"
+
+/* predeclarations of Model used classes */
 class Menu;
 class Ai;
-using std::list;
+//class View;
+class Application;
+
+using std::vector;
 using std::pair;
+using std::string;
+
+/* Smart pointers from boost library, used to keep pointers to Players in container */
 typedef boost::shared_ptr<Player> PlayerPtr;
 
 class Model {
 private:
 	Options *options;
 	char **board;		//Game Board
-	list<PlayerPtr> players;
+	View *view;
+	Application *app;
+	vector<PlayerPtr> players;
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
 public:
-	Model(Options *opt);
+	Model(Application *apl, Options *opt);
 	~Model();
-	bool checkRange(int &x,int &y);
+	bool checkRange(const int &x,const int &y);
 	bool addPlayer(Player *p);
 	int getState(int x,int y);
 	void setState(int &x,int &y,char state);
-	bool step();
+	int step();
 	pair<int,int> getPlayerPosition();
+	friend class Gamer;
 	friend class Ai;
 	friend class Application;
 };
@@ -47,7 +63,7 @@ inline pair<int,int> Model::getPlayerPosition() {
 	return std::make_pair(players.begin()->get()->getX(),players.begin()->get()->getY());
 }
 
-inline bool Model::checkRange(int &x,int &y) {
+inline bool Model::checkRange(const int &x,const int &y) {
 	settings *st = options->getSettings();
 	int FIELD_SIZE = st->size;
 	if (x<0 || y<0 || x>=FIELD_SIZE || y>=FIELD_SIZE)

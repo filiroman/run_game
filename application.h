@@ -5,8 +5,8 @@
 */
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
-#include <SFML/Window.hpp>
 #include <list>
+#include <SFML/Window.hpp>
 //#include "model.h"
 //#include "menu.h"
 //#include "options.h"
@@ -16,7 +16,7 @@ class Options;
 
 using std::list;
 
-class Application: public sf::Window {
+class Application : public sf::Window {
 private:
 	Model *game;
 	Menu *menu;
@@ -27,7 +27,7 @@ public:
 	~Application();
 	//void newGame();
 	void run();	
-	void startGame();
+	bool startGame();
 };
 
 #endif
