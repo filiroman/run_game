@@ -10,8 +10,10 @@
 #include "menu.h"
 
 Application::Application() {
+	sf::Window::Create(sf::VideoMode(800, 600, 32), GAME_WINDOW_NAME);
 	options = new Options();
 	menu = new Menu();	
+	Display();
 }
 
 Application::~Application() {
@@ -25,10 +27,10 @@ Application::~Application() {
 	games.push_back(m);
 }*/
 
-void Application::startGame() {
+bool Application::startGame() {
 	printf("Starting game\n");
 	
-	game = new Model(options);
+	game = new Model(this,options);
 	
 	game->createWorld();
 	game->createWalls();
@@ -36,10 +38,11 @@ void Application::startGame() {
 	
 	printf("Let's Go!\n");
 											
-	
-	while(game->step());
-	printf("Game is finished!\n");
+	int choose = game->step();
+//	printf("Game is finished!\n");
 	delete game;	
+	
+	return !(static_cast<bool>(choose));
 }
 
 void Application::run() {
@@ -48,13 +51,13 @@ void Application::run() {
 		for (list<Model>::iterator it = games.begin(); it!= games.end(); ++it)
 			if (it->step())
 				it = games.erase(it);*/
-	int choose = 0;			
+	int choose;			
 	//Main loop			
 	while ((choose = menu->show()) != EXIT_GAME) {			//show() returns EXIT_GAME (define 0) when user press exit
 		switch (choose)
 		{
 			case NEW_GAME:
-				startGame();
+				while(startGame());
 				break;
 			case GO_OPTIONS:
 				options->optionsScene();

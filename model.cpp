@@ -9,21 +9,24 @@
 #include "model.h"
 #include "gamer.h"
 #include "ai.h"
+#include "view.h"
+#include "application.h"
 
-Model::Model(Options *opt) : sf::Window(sf::VideoMode(800, 600, 32), "Run Game"), board(NULL), options(opt) {
-//	if (fsize<5)												//ToDo: Check that in options
-//		throw GameException("Wrong field size");
+Model::Model(Application *apl, Options *opt) : board(NULL), options(opt), app(apl) {
+	view = new View();
 }
 
-bool Model::step() {
-	for(list<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it) {
-		if(it->get()->turn()) {						//Each player implements his own turn() method (ai or real gamer) 
-			Display();
-			return false;								//return false if game is finished
+int Model::step() {
+	int res;
+	while (1) {
+		for(vector<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it) {
+			if((res = it->get()->turn()) != GAME_RUNNING) {	 //Each player implements his own turn() method (ai or real)
+				app->Display();
+				return res;								
+			}
+			app->Display();
 		}
-		Display();
 	}
-	return true;
 }
 
 void Model::createWalls() {
@@ -35,6 +38,8 @@ void Model::createWalls() {
 
 void Model::createPlayers(int computers) {
 	printf("Creating players...");
+	
+	players.reserve(computers+1);
 
 	addPlayer(new Gamer(this,0,0));									
 	//printf("%d %d\n",players.begin()->getX(),players.begin()->getY());
