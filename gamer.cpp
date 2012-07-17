@@ -7,13 +7,14 @@
 #include <cstdio>
 #include "gamer.h"
 #include "model.h"
+#include "application.h"
 
-bool Gamer::turn() {
+int Gamer::turn() {
 //	int a,b;
 //	scanf("%d%d",&a,&b);
-	while(m->IsOpened()) {
+	while(m->app->IsOpened()) {
 		sf::Event Event;
-		while (m->GetEvent(Event)) {
+		while (m->app->GetEvent(Event)) {
 			if (Event.Type == sf::Event::KeyPressed) {
 			
 				switch (Event.Key.Code) {
@@ -30,10 +31,10 @@ bool Gamer::turn() {
 						moveTo(x,y+1);
 				}		
 				printf("Gamer moves to: %d %d \n",x,y);
-				return false;
+				return 1;
 			}
 		}
-		m->Display();
+		m->app->Display();
 	}
 }
 
