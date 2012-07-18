@@ -29,6 +29,10 @@ int Model::step() {
 	}
 }
 
+void Model::drawMap() {
+	
+}
+
 void Model::createWalls() {
 	srand( time (NULL) );	
 	printf("Creating walls...");

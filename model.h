@@ -53,6 +53,7 @@ public:
 	int getState(int x,int y);
 	void setState(int &x,int &y,char state);
 	int step();
+	void drawMap();
 	pair<int,int> getPlayerPosition();
 	friend class Gamer;
 	friend class Ai;

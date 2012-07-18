@@ -12,7 +12,7 @@
 Application::Application() {
 	sf::Window::Create(sf::VideoMode(800, 600, 32), GAME_WINDOW_NAME);
 	options = new Options();
-	menu = new Menu();	
+	menu = new Menu(this);	
 	Display();
 }
 

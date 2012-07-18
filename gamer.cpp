@@ -29,6 +29,9 @@ int Gamer::turn() {
 						break;
 					case sf::Key::Right:
 						moveTo(x,y+1);
+						break;
+					default:
+						continue;
 				}		
 				printf("Gamer moves to: %d %d \n",x,y);
 				return 1;
