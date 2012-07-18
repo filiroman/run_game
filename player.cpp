@@ -22,10 +22,10 @@ Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 bool Player::moveTo(const int a,const int b) {
 	if (abs(a+b-x-y) == 1 && m->checkRange(a,b))
 		if (m->getState(a,b) != GAME_WALL) {
-			m->setState(x,y,'0');
+			m->setState(x,y,GAME_EMPTY_CELL);
 			x = a;
 			y = b;
-			m->setState(x,y,'1');
+			m->setState(x,y,player_type);
 			return true;
 		}
 	else

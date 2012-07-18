@@ -109,10 +109,9 @@ int Ai::turn() {
 }
 
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
-	//settings *st = model->options->getSettings();
-	//	fn_pt = (bool(*)(int,int))&Ai::fncomp;
-	//q = q(fn_pt);
-	
+
+	player_type = GAME_ENEMY;	
+		
 	settings *st = model->options->getSettings();
 	n = st->size;
 	

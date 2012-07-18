@@ -41,5 +41,8 @@ int Gamer::turn() {
 	}
 }
 
-Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {};
+Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {
+
+	player_type = GAME_PLAYER;
+};
 
