@@ -34,7 +34,7 @@ bool Application::startGame() {
 	
 	game->createWorld();
 	game->createWalls();
-	game->createPlayers(1);		//Create 1 computer player (real player is also 1 now);
+	game->createPlayers(2);		//Create 1 computer player (real player is also 1 now);
 	
 	printf("Let's Go!\n");
 											

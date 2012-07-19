@@ -8,6 +8,7 @@
 #include "gamer.h"
 #include "model.h"
 #include "application.h"
+#include "options.h"
 
 int Gamer::turn() {
 //	int a,b;
@@ -34,7 +35,13 @@ int Gamer::turn() {
 						continue;
 				}		
 				printf("Gamer moves to: %d %d \n",x,y);
-				return 1;
+				
+				settings *st = m->options->getSettings();
+				
+				if (x == st->size-1 && y == st->size-1)
+					return m->view->gameOverScene("You Win!");
+				else 
+					return 1;
 			}
 		}
 		m->app->Display();

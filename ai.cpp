@@ -53,7 +53,7 @@ void Ai::A_star() {											//A star realisation for Ai turn
 			int h = i+near[k], l = j+near[k+1];
 			if (h > n-1 || h < 0 || l > n-1 || l < 0)
 				continue;
-			if (used[h][l] || m->getState(h,l) == GAME_WALL)
+			if (used[h][l] || m->getState(h,l) == GAME_WALL || m->getState(h,l) == GAME_ENEMY)
 				continue;
 			
 			bool better;

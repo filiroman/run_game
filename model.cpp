@@ -14,7 +14,7 @@
 #include "gameexception.h"
 
 Model::Model(Application *apl, Options *opt) : board(NULL), options(opt), app(apl) {
-	view = new View();
+	view = new View(apl);
 	
    if (!gamerImg.LoadFromFile(GAME_RESOURCES(player_game.png)))
    	throw new GameException("no file to load: player_game.png");
@@ -71,18 +71,18 @@ void Model::drawMap() {
 				continue;
 			if (getState(i,j) == GAME_WALL) {
 				sf::Sprite tmp(boxImg);
-				tmp.SetPosition(w+i*IMAGE_SIZE,h+j*IMAGE_SIZE);
-				app->Draw(tmp);
+				boxSpr.SetPosition(w+i*IMAGE_SIZE,h+j*IMAGE_SIZE);
+				app->Draw(boxSpr);
 			}
 			else if (getState(i,j) == GAME_PLAYER) {
 				sf::Sprite tmp(gamerImg);
-				tmp.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
-				app->Draw(tmp);			
+				gamerSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
+				app->Draw(gamerSpr);			
 			}			
 			else {
 				sf::Sprite tmp(computerImg);
-				tmp.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
-				app->Draw(tmp);
+				computerSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
+				app->Draw(computerSpr);
 			}
 		}
 	}	

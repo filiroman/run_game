@@ -11,8 +11,13 @@
 #define GAME_RUNNING 1
 #define GAME_ENDED_NO_RETRY 2
 
+class Application;
+
 class View {
+private:
+	Application *app;
 public:
+	View(Application *apl);
 	int gameOverScene(const std::string &s);	
 };
 
