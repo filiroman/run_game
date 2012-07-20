@@ -37,3 +37,13 @@ void Player::setBoard(Model *b) {
 	m = b;
 }
 
+void Player::setX(int newX) {
+	if (m->checkRange(newX,y))
+		x = newX;
+}
+
+void Player::setY(int newY) {
+	if (m->checkRange(x,newY))
+		y = newY;
+}
+

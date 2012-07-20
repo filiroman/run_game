@@ -60,6 +60,7 @@ public:
 	bool addPlayer(Player *p);
 	char getState(int x,int y);
 	void setState(int &x,int &y,char state);
+	bool checkPaths();
 	int step();
 	void drawMap();
 	pair<int,int> getPlayerPosition();
@@ -83,14 +84,6 @@ inline bool Model::checkRange(const int &x,const int &y) {
 inline char Model::getState(int x,int y) {
 	if (checkRange(x,y)) {
 		return board[x][y];
-			
-//		if (board[x][y] == '0')
-//			return GAME_EMPTY_CELL;
-//		else if (board[x][y] == '3')
-//			return GAME_WALL;
-//		else if (board[x][y] == '1')
-//			return GAME_PLAYER;
-//		else return GAME_ENEMY;
 	}
 	else
 		throw new GameException("wrong coordinates to check");

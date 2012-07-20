@@ -13,6 +13,7 @@
 #include "view.h"
 #include "application.h"
 
+const int INF = 1000*1000;
 
 int near[] = {-1, 0, 1, 0, -1};
 
@@ -27,8 +28,13 @@ int Ai::f(int x,int y) {
 void Ai::clear() {
 	for (int i=0;i<n;++i) {
 		memset(used[i],0,sizeof(bool)*n);
-		memset(p[i],0,sizeof(int)*n);
-		memset(g[i],0,sizeof(int)*n);
+		//memset(p[i],0,sizeof(int)*n);
+		//memset(g[i],0,sizeof(int)*n);
+		
+		for (int j=0;j<n;++j) {
+			p[i][j] = INF;
+			g[i][j] = INF;
+		}
 	}
 	q.clear();
 }
@@ -53,22 +59,26 @@ void Ai::A_star() {											//A star realisation for Ai turn
 			int h = i+near[k], l = j+near[k+1];
 			if (h > n-1 || h < 0 || l > n-1 || l < 0)
 				continue;
-			if (used[h][l] || m->getState(h,l) == GAME_WALL || m->getState(h,l) == GAME_ENEMY)
+			if (used[h][l] || (m->getState(h,l) == GAME_WALL) || (m->getState(h,l) == GAME_ENEMY))
 				continue;
 			
-			bool better;
+			bool better = false;
 		 	it = q.find(std::make_pair(h*n+l,f(h,l)));
+		 	
 			if (it == q.end()) {
 				p[h][l] = i*n+j;
+				g[h][l] = g[i][j]+1;
 				q.insert(std::make_pair(h*n+l,f(h,l)));
 			}
 			else {
-				g[i][j]+1 < g[h][l] ? better=true : better=false;
+				better = g[i][j]+1 < g[h][l];
 			}
 			
 			if (better) {
+				q.erase(it);
 				p[h][l] = i*n+j;
 				g[h][l] = g[i][j]+1;
+				q.insert(std::make_pair(h*n+l,f(h,l)));
 			}					
 		}
 	}	
@@ -78,6 +88,13 @@ myvec Ai::path() {							//restore path from parents array
 	int k;
 	k = p[target_x][target_y];
 	myvec v;
+	
+//	printf("%d | %d | k = %d\n",target_x,target_y,k);
+	
+	if (k == INF) {
+		return v;
+	}
+		
 	v.push_back(std::make_pair(target_x,target_y));
 	while (k != -1) {
 		v.push_back(std::make_pair(k/n,k%n));
@@ -107,7 +124,11 @@ int Ai::turn() {
 	target_y = a.second;
 		
 	A_star();
-	myvec b = path();							
+	myvec b = path();	
+	
+//	for(myvec::iterator it = b.begin();it!= b.end();++it)
+//		printf("%d | %d\n",it->first,it->second);
+								
 	moveTo(b[1].first,b[1].second);			//moving
 	
 	printf("Ai moves to: %d %d \n",b[1].first,b[1].second);
@@ -116,6 +137,20 @@ int Ai::turn() {
 		return m->view->gameOverScene("You Lose!");
 	else 
 		return GAME_RUNNING;
+}
+
+int Ai::test_turn() {
+
+	pair<int,int> a = m->getPlayerPosition();
+	target_x = a.first;
+	target_y = a.second;
+		
+	A_star();
+	myvec b = path();		
+	
+	if (b.empty())
+		return GAME_NO_WAY;
+	else return GAME_RUNNING;
 }
 
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {

@@ -24,6 +24,9 @@ public:
 	int getY()const {
 		return y;
 	};
+	
+	void setX(int newX);
+	void setY(int newY);
 		
 	virtual int turn(){};
 };

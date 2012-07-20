@@ -22,6 +22,8 @@ private:
 	class mycompare {									//Compare class
 	public:
 		bool operator() (const pair<int,int>& lhs, const pair<int,int>& rhs) const {
+			if (lhs.second == rhs.second)
+				return lhs.first > rhs.first;
 			return lhs.second > rhs.second;
 		};
 	};
@@ -38,6 +40,7 @@ public:
 	Ai(Model *model,int a,int b);
 	~Ai();
 	virtual int turn();
+	int test_turn();
 };
 
 #endif

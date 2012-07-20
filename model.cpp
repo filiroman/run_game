@@ -73,17 +73,14 @@ void Model::drawMap() {
 			if (getState(i,j) == GAME_EMPTY_CELL)
 				continue;
 			if (getState(i,j) == GAME_WALL) {
-				sf::Sprite tmp(boxImg);
-				boxSpr.SetPosition(w+i*IMAGE_SIZE,h+j*IMAGE_SIZE);
+				boxSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
 				app->Draw(boxSpr);
 			}
 			else if (getState(i,j) == GAME_PLAYER) {
-				sf::Sprite tmp(gamerImg);
 				gamerSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
 				app->Draw(gamerSpr);			
 			}			
 			else {
-				sf::Sprite tmp(computerImg);
 				computerSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
 				app->Draw(computerSpr);
 			}
@@ -92,9 +89,24 @@ void Model::drawMap() {
 	app->Display();
 }
 
+bool Model::checkPaths() {
+	for(vector<PlayerPtr>::iterator it=players.begin()+1; it!=players.end(); ++it) {
+		if (static_cast<Ai*>(it->get())->test_turn() == GAME_NO_WAY)
+			return false;
+	}
+	return true;
+}
+
 void Model::createWalls() {
 	srand( time (NULL) );	
 	printf("Creating walls...");
+	
+	settings *st = options->getSettings();
+	int FIELD_SIZE = st->size;
+	
+	for(int i=0;i<FIELD_SIZE;i++)
+		for(int j=0;j<FIELD_SIZE;j++)		
+			board[i][j] = (rand()%4 == 1) ? GAME_WALL : GAME_EMPTY_CELL;
 	
 	printf("Done\n");
 }
@@ -102,18 +114,16 @@ void Model::createWalls() {
 void Model::createPlayers(int computers) {
 	printf("Creating players...");
 	
+	players.clear();
 	players.reserve(computers+1);
 
 	addPlayer(new Gamer(this,0,0));									
-	//printf("%d %d\n",players.begin()->getX(),players.begin()->getY());
 
 	settings *st = options->getSettings();
-	//printf("%d\n",st->size);
+
 	for (int i=0;i<computers;++i) {
-		//Ai a(this,st->size-1-i,st->size-1);
 		addPlayer(new Ai(this,st->size-1-i,st->size-1));
 	}
-					// + check path availability of every player
 					
 	printf("Done\n");
 }
@@ -128,9 +138,9 @@ void Model::createWorld() {
 	for(int i=0;i<FIELD_SIZE;++i)
 		board[i] = new char [FIELD_SIZE]();
 		
-	for(int i=0;i<FIELD_SIZE;i++)
-		for(int j=0;j<FIELD_SIZE;j++)		
-			board[i][j] = GAME_EMPTY_CELL;
+//	for(int i=0;i<FIELD_SIZE;i++)
+//		for(int j=0;j<FIELD_SIZE;j++)		
+//			board[i][j] = GAME_EMPTY_CELL;
 	printf("Done\n");
 }
 
@@ -143,13 +153,19 @@ Model::~Model() {
 }
 
 bool Model::addPlayer(Player *p) {
-	if (getState(p->getX(),p->getY()) == GAME_EMPTY_CELL) {
-		board[p->getX()][p->getY()] = p->player_type;
-		p->setBoard(this);
-		players.push_back(PlayerPtr(p));
-		return true;
-	}
-	return false;
+	int x = p->getX(),
+		 y = p->getY(),
+		 ptype = p->player_type;
+		 
+//	if (getState(x,y) == GAME_EMPTY_CELL) {
+
+	setState(x, y, ptype);
+	p->setBoard(this);
+	players.push_back(PlayerPtr(p));
+	return true;
+	
+//	}
+//	return false;
 }
 	
 
