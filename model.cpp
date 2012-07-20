@@ -73,15 +73,16 @@ void Model::drawMap() {
 			if (getState(i,j) == GAME_EMPTY_CELL)
 				continue;
 			if (getState(i,j) == GAME_WALL) {
-				boxSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
+//				boxSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
+				boxSpr.SetPosition(w+j*IMAGE_SIZE,h+i*IMAGE_SIZE);
 				app->Draw(boxSpr);
 			}
 			else if (getState(i,j) == GAME_PLAYER) {
-				gamerSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
+				gamerSpr.SetPosition(w+j*IMAGE_SIZE,h+i*IMAGE_SIZE);
 				app->Draw(gamerSpr);			
 			}			
 			else {
-				computerSpr.SetPosition(w+j*IMAGE_SIZE,height-h-i*IMAGE_SIZE);
+				computerSpr.SetPosition(w+j*IMAGE_SIZE,h+i*IMAGE_SIZE);
 				app->Draw(computerSpr);
 			}
 		}

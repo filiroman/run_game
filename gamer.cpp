@@ -20,10 +20,10 @@ int Gamer::turn() {
 			
 				switch (Event.Key.Code) {
 					case sf::Key::Up:
-				 		moveTo(x+1,y); 
+				 		moveTo(x-1,y); 
 				 		break;
 					case sf::Key::Down:
-						moveTo(x-1,y);
+						moveTo(x+1,y);
 						break;
 					case sf::Key::Left:
 						moveTo(x,y-1);
