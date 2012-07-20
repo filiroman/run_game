@@ -26,6 +26,7 @@ bool Player::moveTo(const int a,const int b) {
 			x = a;
 			y = b;
 			m->setState(x,y,player_type);
+			m->drawMap();
 			return true;
 		}
 	else

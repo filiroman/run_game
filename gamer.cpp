@@ -13,7 +13,7 @@
 int Gamer::turn() {
 //	int a,b;
 //	scanf("%d%d",&a,&b);
-	while(m->app->IsOpened()) {
+//	while(m->app->IsOpened()) {
 		sf::Event Event;
 		while (m->app->GetEvent(Event)) {
 			if (Event.Type == sf::Event::KeyPressed) {
@@ -41,11 +41,12 @@ int Gamer::turn() {
 				if (x == st->size-1 && y == st->size-1)
 					return m->view->gameOverScene("You Win!");
 				else 
-					return 1;
+					return GAME_RUNNING;
 			}
 		}
 		m->app->Display();
-	}
+		return GAME_RUNNING;
+//	}
 }
 
 Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {

@@ -11,6 +11,7 @@
 #include "player.h"
 #include "options.h"
 #include "view.h"
+#include "application.h"
 
 
 int near[] = {-1, 0, 1, 0, -1};
@@ -34,7 +35,6 @@ void Ai::clear() {
 
 void Ai::A_star() {											//A star realisation for Ai turn
 	clear();			//cleaning arrays and set before every turn
-
 	q.insert(std::make_pair(x*n+y,f(x,y)));	//pushing current ai pos to set (pos,f(x,y))
 	g[x][y] = 0;
 	p[x][y] = -1;
@@ -84,6 +84,9 @@ myvec Ai::path() {							//restore path from parents array
 		k = p[k/n][k%n];
 		//printf("%d\n",k);
 	}		
+	
+	//m->players.begin()->get()->turn();
+	
 	std::reverse(v.begin(),v.end());		
 	return v; 
 }
@@ -91,21 +94,28 @@ myvec Ai::path() {							//restore path from parents array
 
 
 int Ai::turn() {
+
+	//real player move (just for easier game and multithreading emulation)
+	int r;
+	for (int i=0;i<30;++i) {
+		usleep(1000*30);
+		if((r = m->players.begin()->get()->turn()) != GAME_RUNNING)
+			return r;
+	}
 	pair<int,int> a = m->getPlayerPosition();
 	target_x = a.first;
 	target_y = a.second;
-	
+		
 	A_star();
 	myvec b = path();							
 	moveTo(b[1].first,b[1].second);			//moving
 	
 	printf("Ai moves to: %d %d \n",b[1].first,b[1].second);
-//	printf("%d | %d | %d | %d \n",b[1].first,b[1].second,target_x,target_y);
-
+	
 	if (b[1].first == target_x && b[1].second == target_y) 
 		return m->view->gameOverScene("You Lose!");
 	else 
-		return 1;
+		return GAME_RUNNING;
 }
 
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {

@@ -38,11 +38,14 @@ int Model::step() {
 	drawMap();
 	int res;
 	while (1) {
-		for(vector<PlayerPtr>::iterator it=players.begin(); it!=players.end(); ++it) {
-			if((res = it->get()->turn()) != GAME_RUNNING) {	 //Each player implements his own turn() method (ai or real)
-				app->Display();
+		for(vector<PlayerPtr>::iterator it=players.begin()+1; it!=players.end(); ++it) {
+			//usleep(1000*300);
+			if((res = players.begin()->get()->turn()) != GAME_RUNNING) 
+				return res;
+			
+			if((res = it->get()->turn()) != GAME_RUNNING)	 //Each player implements his own turn() method (ai or real)
 				return res;								
-			}
+				
 			drawMap();
 			app->Display();
 		}

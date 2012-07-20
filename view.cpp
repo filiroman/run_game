@@ -12,6 +12,8 @@ View::View(Application *apl) :app(apl) {};
 
 int View::gameOverScene(const std::string &s) {
 	
+	app->Display();
+	
 	sf::String GameOver(s+"\nRetry?");
 	GameOver.SetFont(sf::Font::GetDefaultFont());
 	GameOver.SetColor(sf::Color(0, 128, 128));
