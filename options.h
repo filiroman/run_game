@@ -17,11 +17,14 @@ struct settings {
 	bool edges;
 };
 
+class Application;
+
 class Options {
 private:
 	settings *s;
+	Application *app;
 public:
-	Options();
+	Options(Application *apl);
 	~Options();
 	void toDefaults();
 	bool loadFromFile(const string &filename = DEFAULT_FILENAME);	

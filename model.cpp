@@ -6,6 +6,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <cstdio>
+#include <algorithm>
 #include "model.h"
 #include "gamer.h"
 #include "ai.h"
@@ -78,13 +79,35 @@ void Model::drawMap() {
 				app->Draw(boxSpr);
 			}
 			else if (getState(i,j) == GAME_PLAYER) {
-				gamerSpr.SetPosition(w+j*IMAGE_SIZE,h+i*IMAGE_SIZE);
+			
+				double rot = players.begin()->get()->rotation;
+				int si=i,sj=j;
+				if (rot > 0 || rot <-90)
+					++si;
+				if (rot < 0)
+					++sj;
+				gamerSpr.SetRotation(rot);
+				gamerSpr.SetPosition(w+sj*IMAGE_SIZE,h+si*IMAGE_SIZE);
+
 				app->Draw(gamerSpr);			
 			}			
-			else {
-				computerSpr.SetPosition(w+j*IMAGE_SIZE,h+i*IMAGE_SIZE);
+			else if (getState(i,j) == GAME_ENEMY) {
+				for(vector<PlayerPtr>::iterator it = players.begin()+1; it!=players.end(); ++it) {
+					if (it->get()->getX() == i && it->get()->getY() == j) {
+						double rot = it->get()->rotation;
+						int si=i,sj=j;
+						if (rot > 0 || rot <-90)
+							++si;
+						if (rot < 0)
+							++sj;
+						computerSpr.SetRotation(rot);
+						computerSpr.SetPosition(w+sj*IMAGE_SIZE,h+si*IMAGE_SIZE);
+					}
+					break;
+				}
 				app->Draw(computerSpr);
 			}
+			app->Display();		//for more real output
 		}
 	}	
 	app->Display();

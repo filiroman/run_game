@@ -5,11 +5,15 @@
 */
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
 #include "player.h"
 #include "model.h"
 #include "gameexception.h"
 
 Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
+
+	rotation = 0;
+
 	//if(m->checkRange(a,b)) {
 //		x = a;
 //		y = b;
@@ -20,6 +24,10 @@ Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 }
 
 bool Player::moveTo(const int a,const int b) {
+	
+	rotation = ((a == x) ? acos(b-y) : asin(a-x))*360/(2*acos(-1))*(-1);
+	printf("rotation: %f\n",rotation);
+
 	if (abs(a+b-x-y) == 1 && m->checkRange(a,b))
 		if (m->getState(a,b) != GAME_WALL) {
 			m->setState(x,y,GAME_EMPTY_CELL);

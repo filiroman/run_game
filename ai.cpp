@@ -195,6 +195,7 @@ int Ai::test_turn() {
 Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 
 	player_type = GAME_ENEMY;	// Might be a GAME_PLAYER for real player
+	rotation = -180;
 		
 	settings *st = model->options->getSettings();
 	n = st->size;			// getting field_size;
