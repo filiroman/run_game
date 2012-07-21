@@ -62,6 +62,8 @@ int Menu::show() {
 	sf::Sprite test4(timg4);
 	test4.SetPosition(100,100);
 	test4.Rotate(-90);
+	
+	//app->Draw(sf::Shape::Rectangle(timg.GetX()-10,timg.GetY, sf::Color::Color(100,100,100)));
 
 	
 	app->Draw(test);	

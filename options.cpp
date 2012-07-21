@@ -57,7 +57,7 @@ settings *Options::getSettings() {
 
 void Options::optionsScene() {
 
-	sf::String Opt(s+"\nRetry?");
+	sf::String Opt("Retry?");
 	Opt.SetFont(sf::Font::GetDefaultFont());
 	Opt.SetColor(sf::Color(0, 128, 128));
 	Opt.SetPosition(app->GetWidth()/2, app->GetHeight()/2);
@@ -66,15 +66,15 @@ void Options::optionsScene() {
 	sf::String Yes("Yes/"), No("No");
 	Yes.SetFont(sf::Font::GetDefaultFont());
 	Yes.SetColor(sf::Color(0, 128, 128));
-	Yes.SetPosition(GameOver.GetPosition().x, GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
+//	Yes.SetPosition(GameOver.GetPosition().x, GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
 	Yes.SetSize(50.f);
 	
 	No.SetFont(sf::Font::GetDefaultFont());
 	No.SetColor(sf::Color(0, 128, 128));
-	No.SetPosition(GameOver.GetPosition().x + Yes.GetRect().GetWidth(), GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
+//	No.SetPosition(GameOver.GetPosition().x + Yes.GetRect().GetWidth(), GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
 	No.SetSize(50.f);
 	
-	app->Draw(GameOver);
+	app->Draw(Opt);
 	app->Draw(Yes);
 	app->Draw(No);
 	app->Display();

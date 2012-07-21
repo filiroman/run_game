@@ -26,7 +26,7 @@ Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 bool Player::moveTo(const int a,const int b) {
 	
 	rotation = ((a == x) ? acos(b-y) : asin(a-x))*360/(2*acos(-1))*(-1);
-	printf("rotation: %f\n",rotation);
+//	printf("rotation: %f\n",rotation);
 
 	if (abs(a+b-x-y) == 1 && m->checkRange(a,b))
 		if (m->getState(a,b) != GAME_WALL) {
@@ -37,8 +37,10 @@ bool Player::moveTo(const int a,const int b) {
 			m->drawMap();
 			return true;
 		}
-	else
+	else {
+		m->drawMap();
 		return false;
+	}
 }
 
 void Player::setBoard(Model *b) {

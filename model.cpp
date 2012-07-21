@@ -107,7 +107,6 @@ void Model::drawMap() {
 				}
 				app->Draw(computerSpr);
 			}
-			app->Display();		//for more real output
 		}
 	}	
 	app->Display();
