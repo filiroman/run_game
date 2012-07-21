@@ -7,8 +7,10 @@
 #include <cassert>
 #include <cstdio>
 #include "options.h"
+#include "application.h"
 
-Options::Options() {
+Options::Options(Application *apl) {
+	app = apl;
 	if (!loadFromFile(OPTIONS_FILENAME))
 		toDefaults();	
 }
@@ -54,7 +56,28 @@ settings *Options::getSettings() {
 }
 
 void Options::optionsScene() {
-	printf("Options !\n");
+
+	sf::String Opt("Retry?");
+	Opt.SetFont(sf::Font::GetDefaultFont());
+	Opt.SetColor(sf::Color(0, 128, 128));
+	Opt.SetPosition(app->GetWidth()/2, app->GetHeight()/2);
+	Opt.SetSize(50.f);
+	
+	sf::String Yes("Yes/"), No("No");
+	Yes.SetFont(sf::Font::GetDefaultFont());
+	Yes.SetColor(sf::Color(0, 128, 128));
+//	Yes.SetPosition(GameOver.GetPosition().x, GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
+	Yes.SetSize(50.f);
+	
+	No.SetFont(sf::Font::GetDefaultFont());
+	No.SetColor(sf::Color(0, 128, 128));
+//	No.SetPosition(GameOver.GetPosition().x + Yes.GetRect().GetWidth(), GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
+	No.SetSize(50.f);
+	
+	app->Draw(Opt);
+	app->Draw(Yes);
+	app->Draw(No);
+	app->Display();
 }
 	
 Options::~Options() {

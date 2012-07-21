@@ -6,6 +6,7 @@
 #ifndef _APPLICATION_H_
 #define _APPLICATION_H_
 #include <list>
+#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 //#include "model.h"
 //#include "menu.h"
@@ -16,7 +17,7 @@ class Options;
 
 using std::list;
 
-class Application : public sf::Window {
+class Application : public sf::RenderWindow {
 private:
 	Model *game;
 	Menu *menu;
