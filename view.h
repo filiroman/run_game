@@ -6,6 +6,7 @@
 #ifndef _VIEW_H_
 #define _VIEW_H_
 #include <string>
+#include "applayer.h"
 /* gamestate enum (returns in player->turn)*/ 
 #define GAME_ENDED_RETRY 0
 #define GAME_RUNNING 1
@@ -14,12 +15,17 @@
 
 class Application;
 
-class View {
+class View : public AppLayer {
 private:
-	Application *app;
-public:
 	View(Application *apl);
-	int gameOverScene(const std::string &s);	
+	View(const View& v);
+	const View& operator=(View&);
+public:
+	static const View* getInstance(Application *apl)	{
+		static View single(apl);
+		return &single;
+	}
+	int gameOverScene(const std::string &s)const;	
 };
 
 #endif

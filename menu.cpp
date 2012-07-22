@@ -10,9 +10,7 @@
 #include "menu.h"
 #include "model.h"
 
-Menu::Menu(Application *apl) {
-
-	app = apl;
+Menu::Menu(Application *apl) : AppLayer(apl) {
 
 	items.push_back(sf::String("New Game"));
 	items.push_back(sf::String("Settings"));

@@ -8,6 +8,7 @@
 #define OPTIONS_FILENAME "config.rgc"
 #define DEFAULT_FILENAME "default.rgc"
 #include <string>
+#include "applayer.h"
 using std::string;
 struct settings {
 	int size;
@@ -19,10 +20,9 @@ struct settings {
 
 class Application;
 
-class Options {
+class Options : public AppLayer {
 private:
 	settings *s;
-	Application *app;
 public:
 	Options(Application *apl);
 	~Options();

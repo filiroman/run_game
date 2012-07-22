@@ -14,8 +14,8 @@
 #include "application.h"
 #include "gameexception.h"
 
-Model::Model(Application *apl, Options *opt) : board(NULL), options(opt), app(apl) {
-	view = new View(apl);
+Model::Model(Application *apl, Options *opt) : AppLayer(apl), board(NULL), options(opt) {
+	view = View::getInstance(apl);
 	
 	FIELD_SIZE = options->getSettings()->size;
 	
@@ -166,8 +166,7 @@ Model::~Model() {
 
 	delete[] board;
 	
-	delete view;
-	app = NULL;
+	view = NULL;
 	options = NULL;
 }
 

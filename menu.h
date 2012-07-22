@@ -7,6 +7,7 @@
 #define _MENU_H_
 #include <SFML/System.hpp>
 #include <vector>
+#include "applayer.h"
 
 #define NEW_GAME 0
 #define GO_OPTIONS 1
@@ -19,9 +20,8 @@ using std::string;
 
 class Application;
 
-class Menu {
+class Menu : public AppLayer {
 private:
-	Application *app;
 	vector<sf::String> items;
 public:
 	Menu(Application *apl);

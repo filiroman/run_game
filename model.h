@@ -15,6 +15,7 @@
 #include "view.h"
 #include "gameexception.h"
 #include "options.h"
+#include "applayer.h"
 
 /* map cells state defines (returned by model->getState)*/
 #define GAME_WALL '3'
@@ -41,12 +42,11 @@ using std::string;
 /* Smart pointers from boost library, used to keep pointers to Players in container */
 typedef boost::shared_ptr<Player> PlayerPtr;
 
-class Model {
+class Model : public AppLayer {
 private:
 	Options *options;
 	char **board;		//Game Board
-	View *view;
-	Application *app;
+	const View *view;
 	vector<PlayerPtr> players;
 	int FIELD_SIZE;
 	void createWorld();

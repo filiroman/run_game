@@ -8,9 +8,9 @@
 #include "view.h"
 #include "application.h"
 
-View::View(Application *apl) :app(apl) {};
+View::View(Application *apl) : AppLayer(apl) {};
 
-int View::gameOverScene(const std::string &s) {
+int View::gameOverScene(const std::string &s) const {
 	
 	app->Display();
 	

@@ -9,8 +9,7 @@
 #include "options.h"
 #include "application.h"
 
-Options::Options(Application *apl) {
-	app = apl;
+Options::Options(Application *apl) : AppLayer(apl) {
 	if (!loadFromFile(OPTIONS_FILENAME))
 		toDefaults();	
 }
@@ -82,4 +81,5 @@ void Options::optionsScene() {
 	
 Options::~Options() {
 	save();
+	delete s;
 }
