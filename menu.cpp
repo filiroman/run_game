@@ -25,21 +25,6 @@ int Menu::show() {
 
 	app->Clear();
 
-	double h = app->GetHeight()/2;
-	double w = app->GetWidth()/2;
-
-	for(vector<sf::String>::iterator it = items.begin(); it!= items.end(); ++it) {
-	
-		it->SetFont(sf::Font::GetDefaultFont());
-		it->SetColor(sf::Color(0, 128, 128));
-	   it->SetPosition(w, h);
-	   it->SetSize(50.f);
-	   app->Draw(*it);
-	   
-	   h+=it->GetRect().GetHeight();	 	  
-	   
-	}
-
 	sf::Image timg;
 	timg.LoadFromFile(GAME_RESOURCES(player_game.png));
 	sf::Sprite test(timg);
@@ -63,8 +48,25 @@ int Menu::show() {
 	test4.SetPosition(100,100);
 	test4.Rotate(-90);
 	
-	//app->Draw(sf::Shape::Rectangle(timg.GetX()-10,timg.GetY, sf::Color::Color(100,100,100)));
+	app->Draw(sf::Shape::Rectangle(test.GetPosition().x-test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+4, app->GetWidth()-test.GetPosition().x+test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+6, sf::Color::Color(100,100,100)));
+	
+	app->Draw(sf::Shape::Rectangle(test.GetPosition().x+test.GetSubRect().GetWidth()+4, test.GetPosition().y-test.GetSubRect().GetHeight()*1.5, test.GetPosition().x+test.GetSubRect().GetWidth()+6, app->GetHeight()-test.GetPosition().y+test.GetSubRect().GetHeight()*1.5, sf::Color::Color(100,100,100)));
 
+
+	double h = test.GetPosition().y+test.GetSubRect().GetHeight()*2;
+	double w = test.GetPosition().x+test.GetSubRect().GetWidth()*2;
+
+	for(vector<sf::String>::iterator it = items.begin(); it!= items.end(); ++it) {
+	
+		it->SetFont(sf::Font::GetDefaultFont());
+		it->SetColor(sf::Color(0, 128, 128));
+	   it->SetPosition(w, h);
+	   it->SetSize(50.f);
+	   app->Draw(*it);
+	   
+	   h+=it->GetRect().GetHeight();	 	  
+	   
+	}
 	
 	app->Draw(test);	
 	app->Draw(test2);

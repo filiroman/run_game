@@ -159,6 +159,9 @@ int Ai::turn() {
 	BFS_PathFinding(x,y);
 	myvec b = path();	
 	
+	if (b.empty())
+	return GAME_NO_WAY;
+	
 //	for(myvec::iterator it = b.begin();it!= b.end();++it)
 //		printf("%d | %d\n",it->first,it->second);
 								

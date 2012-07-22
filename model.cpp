@@ -17,6 +17,8 @@
 Model::Model(Application *apl, Options *opt) : board(NULL), options(opt), app(apl) {
 	view = new View(apl);
 	
+	FIELD_SIZE = options->getSettings()->size;
+	
    if (!gamerImg.LoadFromFile(GAME_RESOURCES(player_game.png)))
    	throw new GameException("no file to load: player_game.png");
  	gamerSpr = sf::Sprite(gamerImg);   	
@@ -45,7 +47,8 @@ int Model::step() {
 				return res;
 			
 			if((res = it->get()->turn()) != GAME_RUNNING)	 //Each player implements his own turn() method (ai or real)
-				return res;								
+				if (res != GAME_NO_WAY)
+					return res;								
 				
 			drawMap();
 			app->Display();
@@ -60,9 +63,6 @@ void Model::drawMap() {
 	unsigned int height = app->GetHeight();
    double h = height/8;
    double w = app->GetWidth()/6;
-    
-  	settings *st = options->getSettings();
-	int FIELD_SIZE = st->size;
 	
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
 	
@@ -102,8 +102,8 @@ void Model::drawMap() {
 							++sj;
 						computerSpr.SetRotation(rot);
 						computerSpr.SetPosition(w+sj*IMAGE_SIZE,h+si*IMAGE_SIZE);
+						break;
 					}
-					break;
 				}
 				app->Draw(computerSpr);
 			}
@@ -124,9 +124,6 @@ void Model::createWalls() {
 	srand( time (NULL) );	
 	printf("Creating walls...");
 	
-	settings *st = options->getSettings();
-	int FIELD_SIZE = st->size;
-	
 	for(int i=0;i<FIELD_SIZE;i++)
 		for(int j=0;j<FIELD_SIZE;j++)		
 			board[i][j] = (rand()%4 == 1) ? GAME_WALL : GAME_EMPTY_CELL;
@@ -142,10 +139,8 @@ void Model::createPlayers(int computers) {
 
 	addPlayer(new Gamer(this,0,0));									
 
-	settings *st = options->getSettings();
-
 	for (int i=0;i<computers;++i) {
-		addPlayer(new Ai(this,st->size-1-i,st->size-1));
+		addPlayer(new Ai(this,FIELD_SIZE-1-i,FIELD_SIZE-1));
 	}
 					
 	printf("Done\n");
@@ -153,9 +148,6 @@ void Model::createPlayers(int computers) {
 
 void Model::createWorld() {
 	printf("Creating world...");
-
-	settings *st = options->getSettings();
-	int FIELD_SIZE = st->size;
 	
 	board = new char* [FIELD_SIZE];							//Creating map array
 	for(int i=0;i<FIELD_SIZE;++i)
@@ -168,11 +160,15 @@ void Model::createWorld() {
 }
 
 Model::~Model() {
-	settings *st = options->getSettings();
-	for(int i=0;i<st->size;++i)
+
+	for(int i=0;i<FIELD_SIZE;++i)
 		delete[] board[i];
 
 	delete[] board;
+	
+	delete view;
+	app = NULL;
+	options = NULL;
 }
 
 bool Model::addPlayer(Player *p) {

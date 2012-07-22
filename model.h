@@ -48,6 +48,7 @@ private:
 	View *view;
 	Application *app;
 	vector<PlayerPtr> players;
+	int FIELD_SIZE;
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
@@ -74,8 +75,7 @@ inline pair<int,int> Model::getPlayerPosition() {
 }
 
 inline bool Model::checkRange(const int &x,const int &y) {
-	settings *st = options->getSettings();
-	int FIELD_SIZE = st->size;
+
 	if (x<0 || y<0 || x>=FIELD_SIZE || y>=FIELD_SIZE)
 		return false;
 	return true;
