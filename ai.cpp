@@ -11,7 +11,9 @@
 #include "player.h"
 #include "options.h"
 #include "view.h"
+#include "application.h"
 
+const int INF = 1000*1000;
 
 int near[] = {-1, 0, 1, 0, -1};
 
@@ -26,15 +28,17 @@ int Ai::f(int x,int y) {
 void Ai::clear() {
 	for (int i=0;i<n;++i) {
 		memset(used[i],0,sizeof(bool)*n);
-		memset(p[i],0,sizeof(int)*n);
-		memset(g[i],0,sizeof(int)*n);
+				
+		for (int j=0;j<n;++j) {
+			p[i][j] = INF;
+			g[i][j] = INF;
+		}
 	}
 	q.clear();
 }
 
 void Ai::A_star() {											//A star realisation for Ai turn
 	clear();			//cleaning arrays and set before every turn
-
 	q.insert(std::make_pair(x*n+y,f(x,y)));	//pushing current ai pos to set (pos,f(x,y))
 	g[x][y] = 0;
 	p[x][y] = -1;
@@ -53,68 +57,151 @@ void Ai::A_star() {											//A star realisation for Ai turn
 			int h = i+near[k], l = j+near[k+1];
 			if (h > n-1 || h < 0 || l > n-1 || l < 0)
 				continue;
-			if (used[h][l] || m->getState(h,l) == GAME_WALL)
+			if (used[h][l] || m->getState(h,l) == GAME_WALL || m->getState(h,l) == GAME_ENEMY)
 				continue;
 			
-			bool better;
+			bool better = false;
 		 	it = q.find(std::make_pair(h*n+l,f(h,l)));
+		 	
 			if (it == q.end()) {
 				p[h][l] = i*n+j;
+				g[h][l] = g[i][j]+1;
 				q.insert(std::make_pair(h*n+l,f(h,l)));
 			}
 			else {
-				g[i][j]+1 < g[h][l] ? better=true : better=false;
+				better = g[i][j]+1 < g[h][l];
 			}
 			
 			if (better) {
+				q.erase(it);
 				p[h][l] = i*n+j;
 				g[h][l] = g[i][j]+1;
+				q.insert(std::make_pair(h*n+l,f(h,l)));
 			}					
 		}
 	}	
+}
+
+
+/* realisation ai pathfinding through Breadth-first search [ I think it's faster [O(V+E)] than A* (like Djikstra), but when we have egdes with different weight we must use A* or Dijkstra ] */
+
+void Ai::BFS_PathFinding(int cx,int cy) {
+	
+	clear();
+	qt = queue<int> ();
+		
+	qt.push(cx*n+cy);
+	p[cx][cy] = -1;
+	
+	while (!qt.empty()) {
+		
+		int v = qt.front();
+		qt.pop();
+		
+		int i = v/n, j = v%n;
+		used[i][j] = true;
+		
+		if (i == target_x && j == target_y)
+			return;
+		for(int k=0;k<4;++k) {
+			int h = i+near[k], l = j+near[k+1];
+			if (h > n-1 || h < 0 || l > n-1 || l < 0)
+				continue;
+			if (used[h][l] || m->getState(h,l) == GAME_WALL || m->getState(h,l) == GAME_ENEMY)
+				continue;
+				
+			p[h][l] = i*n+j;
+			qt.push(h*n+l);
+		}
+	}
 }
 
 myvec Ai::path() {							//restore path from parents array
 	int k;
 	k = p[target_x][target_y];
 	myvec v;
+	
+//	printf("%d | %d | k = %d\n",target_x,target_y,k);
+	
+	if (k == INF) {
+		return v;
+	}
+		
 	v.push_back(std::make_pair(target_x,target_y));
 	while (k != -1) {
 		v.push_back(std::make_pair(k/n,k%n));
 		k = p[k/n][k%n];
-		//printf("%d\n",k);
 	}		
+	
+	//m->players.begin()->get()->turn();
+	
 	std::reverse(v.begin(),v.end());		
 	return v; 
 }
 
 
+/* function finds the shortest path to gamer and moves computer on it */
 
 int Ai::turn() {
+
+	//real player move (just for easier game and multithreading emulation)
+	int r;
+	for (int i=0;i<30;++i) {
+		usleep(1000*30);
+		if((r = m->players.begin()->get()->turn()) != GAME_RUNNING)
+			return r;
+	}
 	pair<int,int> a = m->getPlayerPosition();
 	target_x = a.first;
 	target_y = a.second;
+		
+//	A_star();	
+	BFS_PathFinding(x,y);
+	myvec b = path();	
 	
-	A_star();
-	myvec b = path();							
+	if (b.empty())
+	return GAME_NO_WAY;
+	
+//	for(myvec::iterator it = b.begin();it!= b.end();++it)
+//		printf("%d | %d\n",it->first,it->second);
+								
 	moveTo(b[1].first,b[1].second);			//moving
 	
 	printf("Ai moves to: %d %d \n",b[1].first,b[1].second);
-//	printf("%d | %d | %d | %d \n",b[1].first,b[1].second,target_x,target_y);
-
+	
 	if (b[1].first == target_x && b[1].second == target_y) 
 		return m->view->gameOverScene("You Lose!");
 	else 
-		return 1;
+		return GAME_RUNNING;
 }
 
-Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
-	//settings *st = model->options->getSettings();
-	//	fn_pt = (bool(*)(int,int))&Ai::fncomp;
-	//q = q(fn_pt);
+
+/* turn function for testing path availability for every computer player before the game starts, don't perform move, just checks */
+
+int Ai::test_turn() {
+
+	pair<int,int> a = m->getPlayerPosition();
+	target_x = a.first;
+	target_y = a.second;
+		
+//	A_star();
+	BFS_PathFinding(x,y);
+	myvec b = path();		
 	
+	if (b.empty())
+		return GAME_NO_WAY;
+	else return GAME_RUNNING;
+}
+
+/* Ai constructor */
+
+Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
+
+	player_type = GAME_ENEMY;	// Might be a GAME_PLAYER for real player
+	rotation = -180;
+		
 	settings *st = model->options->getSettings();
-	n = st->size;
+	n = st->size;			// getting field_size;
 	
 	used = new bool* [n];
 	p = new int* [n];
@@ -125,6 +212,7 @@ Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 		g[i] = new int[n]();
 	}			
 };
+
 
 Ai::~Ai() {
 	for (int i=0;i<n;++i) {

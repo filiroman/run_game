@@ -8,35 +8,54 @@
 #include "gamer.h"
 #include "model.h"
 #include "application.h"
+#include "options.h"
 
 int Gamer::turn() {
 //	int a,b;
 //	scanf("%d%d",&a,&b);
-	while(m->app->IsOpened()) {
+//	while(m->app->IsOpened()) {
 		sf::Event Event;
 		while (m->app->GetEvent(Event)) {
 			if (Event.Type == sf::Event::KeyPressed) {
 			
 				switch (Event.Key.Code) {
 					case sf::Key::Up:
-				 		moveTo(x+1,y); 
+				 		moveTo(x-1,y); 
 				 		break;
 					case sf::Key::Down:
-						moveTo(x-1,y);
+						moveTo(x+1,y);
 						break;
 					case sf::Key::Left:
 						moveTo(x,y-1);
 						break;
 					case sf::Key::Right:
 						moveTo(x,y+1);
+						break;
+					default:
+						continue;
 				}		
 				printf("Gamer moves to: %d %d \n",x,y);
-				return 1;
+				
+				settings *st = m->options->getSettings();
+				
+				for(vector<PlayerPtr>::iterator it=m->players.begin()+1; it!=m->players.end(); ++it) {
+					if (x == it->get()->getX() && y == it->get()->getY())
+						return m->view->gameOverScene("You Lose!");
+				}
+				
+				if (x == st->size-1 && y == st->size-1)
+					return m->view->gameOverScene("You Win!");
+				else 
+					return GAME_RUNNING;
 			}
 		}
 		m->app->Display();
-	}
+		return GAME_RUNNING;
+//	}
 }
 
-Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {};
+Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {
+
+	player_type = GAME_PLAYER;
+};
 

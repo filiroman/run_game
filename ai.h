@@ -8,12 +8,14 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <queue>
 #include "player.h"
 //#include "model.h"
 class Model;
 using std::set;
 using std::vector;
 using std::pair;
+using std::queue;
 
 typedef vector<pair<int,int> > myvec;
 
@@ -22,6 +24,8 @@ private:
 	class mycompare {									//Compare class
 	public:
 		bool operator() (const pair<int,int>& lhs, const pair<int,int>& rhs) const {
+			if (lhs.second == rhs.second)
+				return lhs.first > rhs.first;
 			return lhs.second > rhs.second;
 		};
 	};
@@ -29,6 +33,7 @@ private:
 	bool **used;
 	int **p,**g;					//for A* (used, parents, g(x) )
 	set<pair<int, int>, mycompare> q;
+	queue<int> qt;
 	int h(int x,int y);
 	int f(int x,int y);
 	void A_star();
@@ -37,7 +42,9 @@ private:
 public:
 	Ai(Model *model,int a,int b);
 	~Ai();
+	void BFS_PathFinding(int cx,int cy);
 	virtual int turn();
+	int test_turn();
 };
 
 #endif

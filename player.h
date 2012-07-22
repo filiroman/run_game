@@ -13,6 +13,8 @@ protected:
 	Model *m;
 	// - Something else (maybe health, e.t.c)
 public:
+	double rotation;				//rotation of model (in degrees), for drawing
+	char player_type;
 	Player(Model *model,int a,int b);			//Initialize player on (a,b) position;
 	bool moveTo(const int a,const int b);
 	void setBoard(Model *b);
@@ -23,6 +25,9 @@ public:
 	int getY()const {
 		return y;
 	};
+	
+	void setX(int newX);
+	void setY(int newY);
 		
 	virtual int turn(){};
 };

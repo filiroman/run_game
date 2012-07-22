@@ -8,19 +8,26 @@
 #include <vector>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <SFML/Graphics.hpp>
 #include <string>
+#include <cstring>
 #include "player.h"
 #include "view.h"
 #include "gameexception.h"
 #include "options.h"
+#include "applayer.h"
 
 /* map cells state defines (returned by model->getState)*/
-#define GAME_WALL 30
-#define GAME_PLAYER 20
-#define GAME_EMPTY_CELL 10
+#define GAME_WALL '3'
+#define GAME_ENEMY '2'
+#define GAME_PLAYER '1'
+#define GAME_EMPTY_CELL '0'
 
 /* defines Game window header */
 #define GAME_WINDOW_NAME "Run Game"
+
+/* resources folder macro define */
+#define GAME_RESOURCES(name) "resources/"#name
 
 /* predeclarations of Model used classes */
 class Menu;
@@ -35,24 +42,28 @@ using std::string;
 /* Smart pointers from boost library, used to keep pointers to Players in container */
 typedef boost::shared_ptr<Player> PlayerPtr;
 
-class Model {
+class Model : public AppLayer {
 private:
 	Options *options;
 	char **board;		//Game Board
-	View *view;
-	Application *app;
+	const View *view;
 	vector<PlayerPtr> players;
+	int FIELD_SIZE;
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
+	sf::Image gamerImg,computerImg,boxImg,cellImg;
+	sf::Sprite gamerSpr,computerSpr,boxSpr,cellSpr;
 public:
 	Model(Application *apl, Options *opt);
 	~Model();
 	bool checkRange(const int &x,const int &y);
 	bool addPlayer(Player *p);
-	int getState(int x,int y);
+	char getState(int x,int y);
 	void setState(int &x,int &y,char state);
+	bool checkPaths();
 	int step();
+	void drawMap();
 	pair<int,int> getPlayerPosition();
 	friend class Gamer;
 	friend class Ai;
@@ -64,21 +75,15 @@ inline pair<int,int> Model::getPlayerPosition() {
 }
 
 inline bool Model::checkRange(const int &x,const int &y) {
-	settings *st = options->getSettings();
-	int FIELD_SIZE = st->size;
+
 	if (x<0 || y<0 || x>=FIELD_SIZE || y>=FIELD_SIZE)
 		return false;
 	return true;
 }
 
-inline int Model::getState(int x,int y) {
+inline char Model::getState(int x,int y) {
 	if (checkRange(x,y)) {
-		if (board[x][y] == '0')
-			return GAME_EMPTY_CELL;
-		else if (board[x][y] == '2')
-			return GAME_WALL;
-		else 
-			return GAME_PLAYER;
+		return board[x][y];
 	}
 	else
 		throw new GameException("wrong coordinates to check");

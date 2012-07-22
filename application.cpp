@@ -11,13 +11,11 @@
 
 Application::Application() {
 	sf::Window::Create(sf::VideoMode(800, 600, 32), GAME_WINDOW_NAME);
-	options = new Options();
-	menu = new Menu();	
-	Display();
+	options = new Options(this);
+	menu = new Menu(this);	
 }
 
 Application::~Application() {
-	//delete game;						//Also delete in startGame when game ended
 	delete menu;
 	delete options;
 }
@@ -31,15 +29,19 @@ bool Application::startGame() {
 	printf("Starting game\n");
 	
 	game = new Model(this,options);
-	
+
 	game->createWorld();
 	game->createWalls();
-	game->createPlayers(1);		//Create 1 computer player (real player is also 1 now);
+	game->createPlayers(2);		//Create 1 computer player (real player is also 1 now);
+	
+	while (!(game->checkPaths())) {		//checking path availability of every player
+		game->createWalls();
+		game->createPlayers(2);
+	}
 	
 	printf("Let's Go!\n");
 											
 	int choose = game->step();
-//	printf("Game is finished!\n");
 	delete game;	
 	
 	return !(static_cast<bool>(choose));
@@ -51,6 +53,7 @@ void Application::run() {
 		for (list<Model>::iterator it = games.begin(); it!= games.end(); ++it)
 			if (it->step())
 				it = games.erase(it);*/
+				
 	int choose;			
 	//Main loop			
 	while ((choose = menu->show()) != EXIT_GAME) {			//show() returns EXIT_GAME (define 0) when user press exit

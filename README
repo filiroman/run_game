@@ -1,5 +1,5 @@
 
-run_game v 0.1
+run_game v 0.2
 console test version
 ========
 
@@ -9,7 +9,8 @@ to make you need sfml-1.6 library, which you can download on http://sfml-dev.org
 
 after that, just cd to the sources folder and copy to terminal:
 
-g++ model.cpp ai.cpp application.cpp player.cpp gameexception.cpp gamer.cpp main.cpp menu.cpp options.cpp -o main -lsfml-window -lsfml-system
+g++ model.cpp ai.cpp application.cpp player.cpp gameexception.cpp gamer.cpp main.cpp menu.cpp options.cpp view.cpp applayer.cpp -o main -lsfml-graphics -lsfml-window -lsfml-system
+
 
 then ./main to run the game
 
