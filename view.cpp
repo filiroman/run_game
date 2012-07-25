@@ -7,8 +7,48 @@
 //#include <cstdio>
 #include "view.h"
 #include "application.h"
+#include "model.h"
 
 View::View(Application *apl) : AppLayer(apl) {};
+
+void View::menuDraw() const {
+	
+	app->Clear();
+
+	sf::Image timg;
+	timg.LoadFromFile(GAME_RESOURCES(player_game.png));
+	sf::Sprite test(timg);
+	test.SetPosition(100,100);
+	
+	sf::Image timg2;
+	timg2.LoadFromFile(GAME_RESOURCES(box_game.png));
+	sf::Sprite test2(timg2);
+	test2.SetPosition(100,100);
+	test2.Rotate(90);
+	
+	sf::Image timg3;
+	timg3.LoadFromFile(GAME_RESOURCES(computer_game.png));
+	sf::Sprite test3(timg3);
+	test3.SetPosition(100,100);
+	test3.Rotate(180);
+
+	sf::Image timg4;
+	timg4.LoadFromFile(GAME_RESOURCES(box_game.png));
+	sf::Sprite test4(timg4);
+	test4.SetPosition(100,100);
+	test4.Rotate(-90);
+	
+	app->Draw(sf::Shape::Rectangle(test.GetPosition().x-test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+4, app->GetWidth()-test.GetPosition().x+test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+6, sf::Color::Color(100,100,100)));
+	
+	app->Draw(sf::Shape::Rectangle(test.GetPosition().x+test.GetSubRect().GetWidth()+4, test.GetPosition().y-test.GetSubRect().GetHeight()*1.5, test.GetPosition().x+test.GetSubRect().GetWidth()+6, app->GetHeight()-test.GetPosition().y+test.GetSubRect().GetHeight()*1.5, sf::Color::Color(100,100,100)));
+	
+	app->Draw(test);	
+	app->Draw(test2);
+	app->Draw(test3);
+	app->Draw(test4);
+	app->Display();
+	
+}
 
 int View::gameOverScene(const std::string &s) const {
 	

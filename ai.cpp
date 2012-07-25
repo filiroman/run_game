@@ -200,8 +200,7 @@ Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 	player_type = GAME_ENEMY;	// Might be a GAME_PLAYER for real player
 	rotation = -180;
 		
-	settings *st = model->options->getSettings();
-	n = st->size;			// getting field_size;
+	n = model->FIELD_SIZE;			// getting field_size;
 	
 	used = new bool* [n];
 	p = new int* [n];

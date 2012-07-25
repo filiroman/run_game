@@ -25,7 +25,8 @@ public:
 		static View single(apl);
 		return &single;
 	}
-	int gameOverScene(const std::string &s)const;	
+	int gameOverScene(const std::string &s)const;
+	void menuDraw()const;	
 };
 
 #endif

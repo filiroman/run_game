@@ -16,7 +16,6 @@
 #define EXIT_GAME 4
 
 using std::vector;
-using std::string;
 
 class Application;
 

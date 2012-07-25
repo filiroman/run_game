@@ -3,27 +3,87 @@
 	
 	(c) roman filippov, 2012
 */
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 #include <cstdlib>
 #include <cassert>
 #include <cstdio>
 #include "options.h"
 #include "application.h"
+#include "view.h"
+
+void Options::writeSettingsToStrings() {
+
+	// cleaning items
+	
+	items_values.clear();
+
+	// writing resolution to string
+	char tmp[20];
+	sf::VideoMode Mode = sf::VideoMode::GetMode(s->resolution);
+	sprintf(tmp,"%dx%d",Mode.Width,Mode.Height);
+	
+	items_values.push_back(sf::String(tmp));
+	
+	// writing size to string
+	
+	sprintf(tmp,"%d",s->size);
+	items_values.push_back(sf::String(tmp));
+	
+	// writing walls count to string
+	
+	switch (s->walls) {
+		case 0:
+			items_values.push_back(sf::String("Low"));
+			break;
+		case 1:
+			items_values.push_back(sf::String("Medium"));
+			break;
+		case 2:
+			items_values.push_back(sf::String("High"));
+	}
+	
+	// writing enemies count to string 
+	
+	sprintf(tmp,"%d",s->enemies);
+	items_values.push_back(sf::String(tmp));
+	
+	// writing fullscreen
+	
+	items_values.push_back(sf::String(s->fullscreen ? "Yes" : "No"));
+	
+	// writing edges
+	
+	items_values.push_back(sf::String(s->edges ? "Yes" : "No"));
+	
+}
 
 Options::Options(Application *apl) : AppLayer(apl) {
 	if (!loadFromFile(OPTIONS_FILENAME))
 		toDefaults();	
+	items.push_back(sf::String("Options:"));
+	items.push_back(sf::String("back to menu"));
+	items.push_back(sf::String("Resolution"));
+	items.push_back(sf::String("Size"));
+	items.push_back(sf::String("Walls"));
+	items.push_back(sf::String("Enemies"));
+	items.push_back(sf::String("Fullscreen"));
+	items.push_back(sf::String("Edges"));
+	
+	writeSettingsToStrings();
 }
 
 void Options::toDefaults() {
 	if (!loadFromFile(DEFAULT_FILENAME)) {
 		
-		s = new settings;
+		s = new Settings;
+		s->resolution = 2;
 		s->size = 10;
 		s->walls = 1;
 		s->enemies = 1;
 		s->fullscreen = 0;
 		s->edges = 1;
-		
+			
 		save(DEFAULT_FILENAME);
 	}
 }
@@ -31,9 +91,9 @@ void Options::toDefaults() {
 bool Options::loadFromFile(const string &filename) {
 	FILE *f = fopen(filename.c_str(),"rb");
 	if (f == NULL) return false;
-	s = new settings;
-	
-	if (fread(s,sizeof(settings),1,f) == 1) {
+	s = new Settings;
+
+	if (fread(s,sizeof(Settings),1,f) == 1) {
 		fclose(f);
 		return true;
 	}
@@ -45,38 +105,125 @@ void Options::save(const string &filename) {
 	FILE *f = fopen(filename.c_str(),"wb");
 	assert(f != NULL);
 	
-	int n = fwrite(s,sizeof(settings),1,f);
+	int n = fwrite(s,sizeof(Settings),1,f);
 	assert(n == 1);
 	fclose(f);
 }
 
-settings *Options::getSettings() {
+Settings *Options::getSettings() {
 	return s;
 }
 
-void Options::optionsScene() {
+void Options::getSettingsToArray(int *&p) {
+	p = new int[sizeof(int)*OPT_SIZE]();
+	p[0] = s->resolution;
+	p[1] = s->size;
+	p[2] = s->walls;
+	p[3] = s->enemies;
+	p[4] = static_cast<int>(s->fullscreen);
+	p[5] = static_cast<int>(s->edges);	
+}
 
-	sf::String Opt("Retry?");
-	Opt.SetFont(sf::Font::GetDefaultFont());
-	Opt.SetColor(sf::Color(0, 128, 128));
-	Opt.SetPosition(app->GetWidth()/2, app->GetHeight()/2);
-	Opt.SetSize(50.f);
+void Options::optionsItemsDraw() {
+
+	double w = 180, h = 60;
+
+	View::getInstance(app)->menuDraw();
+	writeSettingsToStrings();
+
+	// Drawing "Options:" string
+
+	items.begin()->SetFont(sf::Font::GetDefaultFont());
+	items.begin()->SetColor(sf::Color(0, 128, 128));
+	items.begin()->SetPosition(w, h);
+	items.begin()->SetSize(50.f);
+	app->Draw(*(items.begin()));	
 	
-	sf::String Yes("Yes/"), No("No");
-	Yes.SetFont(sf::Font::GetDefaultFont());
-	Yes.SetColor(sf::Color(0, 128, 128));
-//	Yes.SetPosition(GameOver.GetPosition().x, GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
-	Yes.SetSize(50.f);
+	h+=items.begin()->GetRect().GetHeight()*2;
 	
-	No.SetFont(sf::Font::GetDefaultFont());
-	No.SetColor(sf::Color(0, 128, 128));
-//	No.SetPosition(GameOver.GetPosition().x + Yes.GetRect().GetWidth(), GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
-	No.SetSize(50.f);
+	//Drawing options and values strings
 	
-	app->Draw(Opt);
-	app->Draw(Yes);
-	app->Draw(No);
+	int app_width = app->GetWidth();
+	int i=0;
+	for(vector<sf::String>::iterator it = items.begin()+2; it!= items.end(); ++it) {
+	
+		it->SetFont(sf::Font::GetDefaultFont());
+		it->SetColor(sf::Color(0, 128, 128));
+	   it->SetPosition(w, h);
+	   it->SetSize(50.f);
+	   app->Draw(*it);
+	   
+		items_values[i].SetFont(sf::Font::GetDefaultFont());
+		items_values[i].SetColor(sf::Color(0, 128, 128));
+	   items_values[i].SetSize(50.f);
+	   items_values[i].SetPosition(app_width-items_values[i].GetRect().GetWidth()-20, h);
+	   app->Draw(items_values[i]);
+	   
+	   h+=it->GetRect().GetHeight();	 	  
+	   ++i;	   
+	}
+	
+	// Drawing "Back to menu" string
+	
+	(items.begin()+1)->SetFont(sf::Font::GetDefaultFont());
+	(items.begin()+1)->SetColor(sf::Color(0, 128, 128));
+	(items.begin()+1)->SetPosition(w, h);
+	(items.begin()+1)->SetSize(40.f);
+	app->Draw(*(items.begin()+1));	
+	
 	app->Display();
+}
+
+void Options::changeOption(int num) {
+	switch (num) {
+		case 0:
+			s->resolution = (s->resolution+1) % sf::VideoMode::GetModesCount();
+			break;
+		case 1:
+			s->size = (s->size+1) % (MAX_SIZE+1);
+			if (s->size < MIN_SIZE)
+				s->size = MIN_SIZE;
+			break;
+		case 2:
+			s->walls = (s->walls+1) % 3;
+			break;
+		case 3:
+			s->enemies = (s->enemies+1) % (MAX_ENEMIES+1);
+			if (s->enemies == 0)
+				s->enemies = 1;
+			break;
+		case 4:
+			s->fullscreen = !s->fullscreen;
+			break;
+		case 5:
+			s->edges = !s->edges;
+	}
+}
+
+void Options::optionsScene() {
+	
+	optionsItemsDraw();
+	
+	while(app->IsOpened()) {
+		sf::Event Event;
+		while (app->GetEvent(Event)) {
+			if (Event.Type == sf::Event::MouseButtonPressed) { 
+				int i = 0;
+				for(vector<sf::String>::iterator it = items.begin()+2; it!= items.end(); ++it) {
+					if (it->GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y) || items_values[i].GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y)) {
+						changeOption(i);
+						optionsItemsDraw();
+					}
+					
+					else if ((items.begin()+1)->GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y)) {
+						save();
+						return;
+					}					
+					++i;
+				}
+			}				
+		}
+	}	
 }
 	
 Options::~Options() {

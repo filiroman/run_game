@@ -7,10 +7,26 @@
 #define _OPTIONS_H_
 #define OPTIONS_FILENAME "config.rgc"
 #define DEFAULT_FILENAME "default.rgc"
+#include <SFML/System.hpp>
 #include <string>
+#include <vector>
 #include "applayer.h"
+
+/* different options records number, such as resolution,size,walls and so on */
+#define OPT_SIZE 6
+
+/* defines minimum maximum size of board */
+#define MIN_SIZE 5
+#define MAX_SIZE 20
+
+/* defines maximum count of enemies can be */
+#define MAX_ENEMIES 5
+
 using std::string;
-struct settings {
+using std::vector;
+
+struct Settings {
+	int resolution;
 	int size;
 	int walls;
 	int enemies;
@@ -22,14 +38,20 @@ class Application;
 
 class Options : public AppLayer {
 private:
-	settings *s;
+	Settings *s;
+	vector<sf::String> items;
+	vector<sf::String> items_values;
 public:
 	Options(Application *apl);
 	~Options();
 	void toDefaults();
 	bool loadFromFile(const string &filename = DEFAULT_FILENAME);	
 	void save(const string &filename = OPTIONS_FILENAME);
-	settings *getSettings(); 
+	Settings *getSettings(); 
+	void getSettingsToArray(int *&p);
+	void writeSettingsToStrings();
+	void optionsItemsDraw();
+	void changeOption(int num);
 	void optionsScene();
 };
 #endif

@@ -16,7 +16,7 @@
 
 Model::Model(Application *apl, Options *opt) : AppLayer(apl), board(NULL), options(opt) {
 	view = View::getInstance(apl);
-	
+
 	FIELD_SIZE = options->getSettings()->size;
 	
    if (!gamerImg.LoadFromFile(GAME_RESOURCES(player_game.png)))
@@ -124,9 +124,22 @@ void Model::createWalls() {
 	srand( time (NULL) );	
 	printf("Creating walls...");
 	
+	int chance = options->getSettings()->walls;
+	
+	switch (chance) {
+		case 0:
+			chance = 9;
+			break;
+		case 1:
+			chance = 6;
+			break;
+		case 2:
+			chance = 4;
+	}
+	
 	for(int i=0;i<FIELD_SIZE;i++)
 		for(int j=0;j<FIELD_SIZE;j++)		
-			board[i][j] = (rand()%4 == 1) ? GAME_WALL : GAME_EMPTY_CELL;
+			board[i][j] = (rand()%chance == 1) ? GAME_WALL : GAME_EMPTY_CELL;
 	
 	printf("Done\n");
 }

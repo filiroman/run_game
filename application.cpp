@@ -10,9 +10,10 @@
 #include "menu.h"
 
 Application::Application() {
-	sf::Window::Create(sf::VideoMode(800, 600, 32), GAME_WINDOW_NAME);
 	options = new Options(this);
 	menu = new Menu(this);	
+	Settings *st = options->getSettings();
+	sf::Window::Create(sf::VideoMode::GetMode(st->resolution), GAME_WINDOW_NAME, st->fullscreen ? sf::Style::Fullscreen : sf::Style::Resize|sf::Style::Close);
 }
 
 Application::~Application() {
@@ -30,13 +31,15 @@ bool Application::startGame() {
 	
 	game = new Model(this,options);
 
+	int ai_num = options->getSettings()->enemies;	
+		
 	game->createWorld();
 	game->createWalls();
-	game->createPlayers(2);		//Create 1 computer player (real player is also 1 now);
+	game->createPlayers(ai_num);		//Create 1 computer player (real player is also 1 now);
 	
 	while (!(game->checkPaths())) {		//checking path availability of every player
 		game->createWalls();
-		game->createPlayers(2);
+		game->createPlayers(ai_num);
 	}
 	
 	printf("Let's Go!\n");

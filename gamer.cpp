@@ -36,14 +36,12 @@ int Gamer::turn() {
 				}		
 				printf("Gamer moves to: %d %d \n",x,y);
 				
-				settings *st = m->options->getSettings();
-				
 				for(vector<PlayerPtr>::iterator it=m->players.begin()+1; it!=m->players.end(); ++it) {
 					if (x == it->get()->getX() && y == it->get()->getY())
 						return m->view->gameOverScene("You Lose!");
 				}
 				
-				if (x == st->size-1 && y == st->size-1)
+				if (x == m->FIELD_SIZE-1 && y == m->FIELD_SIZE-1)
 					return m->view->gameOverScene("You Win!");
 				else 
 					return GAME_RUNNING;
