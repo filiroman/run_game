@@ -61,10 +61,10 @@ void Model::drawMap() {
 	app->Clear();
 	
 	unsigned int height = app->GetHeight();
-   double h = height/8;
-   double w = app->GetWidth()/6;
-	
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
+	
+   double h = height/2-FIELD_SIZE*IMAGE_SIZE/2;
+   double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/2;
 	
 	app->Draw(sf::Shape::Rectangle(w, h, w+FIELD_SIZE*IMAGE_SIZE, h+FIELD_SIZE*IMAGE_SIZE, sf::Color::Color(100,100,100)));
 	
@@ -134,7 +134,7 @@ void Model::createWalls() {
 			chance = 6;
 			break;
 		case 2:
-			chance = 4;
+			chance = 3;
 	}
 	
 	for(int i=0;i<FIELD_SIZE;i++)

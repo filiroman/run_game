@@ -31,6 +31,8 @@ int Gamer::turn() {
 					case sf::Key::Right:
 						moveTo(x,y+1);
 						break;
+					case sf::Key::Escape:
+						return m->view->gameOverScene("Game aborted!");
 					default:
 						continue;
 				}		
