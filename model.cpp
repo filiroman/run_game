@@ -76,10 +76,6 @@ void Model::drawMap() {
    double h = height/2-FIELD_SIZE*IMAGE_SIZE/2;
    double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/2;
 	
-	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+FIELD_SIZE*IMAGE_SIZE+2, h+FIELD_SIZE*IMAGE_SIZE+2, sf::Color::Color(228,228,149)));
-	
-	app->Draw(sf::Shape::Rectangle(w, h, w+FIELD_SIZE*IMAGE_SIZE, h+FIELD_SIZE*IMAGE_SIZE, sf::Color::Color(100,100,100)));
-	
 	pair<int,int> pos = getPlayerPosition();
 	int i_now = pos.first/FIELD_SIZE*FIELD_SIZE;
 	int j_now = pos.second/FIELD_SIZE*FIELD_SIZE;
@@ -90,6 +86,10 @@ void Model::drawMap() {
 		max_value_i = MAP_SIZE;
 	if (max_value_j > MAP_SIZE)
 		max_value_j = MAP_SIZE;
+		
+	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(228,228,149)));
+	
+	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(100,100,100)));
 	
 //	printf("i=%d|j=%d|imax=%d|jmax=%d|\n",i_now,j_now,max_value_i,max_value_j);
 	

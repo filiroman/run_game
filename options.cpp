@@ -208,7 +208,7 @@ void Options::optionsItemsDraw() {
 
 void Options::changeOption(int num) {
 	int *p;
-	static int mapsize[] = {10,50,100,200};
+	static int mapsize[] = {MAP_SMALL,MAP_AVERAGE,MAP_LARGE,MAP_HUGE};
 	
 	switch (num) {
 		case 0:

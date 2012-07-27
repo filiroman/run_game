@@ -22,6 +22,12 @@
 /* defines maximum count of enemies can be */
 #define MAX_ENEMIES 5
 
+/* defines different map sizes */
+#define MAP_SMALL 10
+#define MAP_AVERAGE 50
+#define MAP_LARGE 100
+#define MAP_HUGE 200
+
 using std::string;
 using std::vector;
 
