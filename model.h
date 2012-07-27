@@ -48,7 +48,8 @@ private:
 	char **board;		//Game Board
 	const View *view;
 	vector<PlayerPtr> players;
-	int FIELD_SIZE;
+	int FIELD_SIZE;	//Size for map to draw in one screen
+	int MAP_SIZE;		//Real size of all map
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
@@ -76,7 +77,7 @@ inline pair<int,int> Model::getPlayerPosition() {
 
 inline bool Model::checkRange(const int &x,const int &y) {
 
-	if (x<0 || y<0 || x>=FIELD_SIZE || y>=FIELD_SIZE)
+	if (x<0 || y<0 || x>=MAP_SIZE || y>=MAP_SIZE)
 		return false;
 	return true;
 }

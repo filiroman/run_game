@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <cstdio>
+#include <algorithm>
 #include "options.h"
 #include "application.h"
 #include "view.h"
@@ -27,8 +28,19 @@ void Options::writeSettingsToStrings() {
 	
 	// writing size to string
 	
-	sprintf(tmp,"%d",s->size);
-	items_values.push_back(sf::String(tmp));
+	switch (s->size) {
+		case 10:
+			items_values.push_back(sf::String("Small"));
+			break;
+		case 50:
+			items_values.push_back(sf::String("Average"));
+			break;
+		case 100:
+			items_values.push_back(sf::String("Large"));
+			break;
+		case 200:
+			items_values.push_back(sf::String("Very Large"));
+	}
 	
 	// writing walls count to string
 	
@@ -58,11 +70,12 @@ void Options::writeSettingsToStrings() {
 	
 }
 
-Options::Options(Application *apl) : AppLayer(apl) {
+Options::Options(Application *apl) : AppLayer(apl), s(NULL) {
 	if (!loadFromFile(OPTIONS_FILENAME))
 		toDefaults();	
 	items.push_back(sf::String("Options:"));
 	items.push_back(sf::String("back to menu"));
+	items.push_back(sf::String("To defaults"));
 	items.push_back(sf::String("Resolution"));
 	items.push_back(sf::String("Size"));
 	items.push_back(sf::String("Walls"));
@@ -75,6 +88,11 @@ Options::Options(Application *apl) : AppLayer(apl) {
 
 void Options::toDefaults() {
 	if (!loadFromFile(DEFAULT_FILENAME)) {
+		
+		if (s!=NULL) {
+			delete s;
+			s = NULL;
+		}
 		
 		s = new Settings;
 		s->resolution = 2;
@@ -91,6 +109,12 @@ void Options::toDefaults() {
 bool Options::loadFromFile(const string &filename) {
 	FILE *f = fopen(filename.c_str(),"rb");
 	if (f == NULL) return false;
+	
+	if (s!=NULL) {
+		delete s;
+		s = NULL;
+	}
+	
 	s = new Settings;
 
 	if (fread(s,sizeof(Settings),1,f) == 1) {
@@ -145,7 +169,7 @@ void Options::optionsItemsDraw() {
 	
 	int app_width = app->GetWidth();
 	int i=0;
-	for(vector<sf::String>::iterator it = items.begin()+2; it!= items.end(); ++it) {
+	for(vector<sf::String>::iterator it = items.begin()+3; it!= items.end(); ++it) {
 	
 		it->SetFont(sf::Font::GetDefaultFont());
 		it->SetColor(sf::Color(0, 128, 128));
@@ -171,18 +195,35 @@ void Options::optionsItemsDraw() {
 	(items.begin()+1)->SetSize(40.f);
 	app->Draw(*(items.begin()+1));	
 	
+	// Drawing "To defaults" string
+	
+	(items.begin()+2)->SetFont(sf::Font::GetDefaultFont());
+	(items.begin()+2)->SetColor(sf::Color(0, 128, 128));
+	(items.begin()+2)->SetSize(40.f);
+	(items.begin()+2)->SetPosition(app->GetWidth()-(items.begin()+2)->GetRect().GetWidth()-20, h);
+	app->Draw(*(items.begin()+2));	
+	
 	app->Display();
 }
 
 void Options::changeOption(int num) {
+	int *p;
+	static int mapsize[] = {10,50,100,200};
+	
 	switch (num) {
 		case 0:
 			s->resolution = (s->resolution+1) % sf::VideoMode::GetModesCount();
 			break;
 		case 1:
-			s->size = (s->size+1) % (MAX_SIZE+1);
+			p = std::find(mapsize,mapsize+4,s->size);
+			if (p == mapsize+3)
+				s->size = *(mapsize);
+			else
+				s->size = *(p+1);
+				
 			if (s->size < MIN_SIZE)
 				s->size = MIN_SIZE;
+			p = NULL;
 			break;
 		case 2:
 			s->walls = (s->walls+1) % 3;
@@ -209,7 +250,7 @@ void Options::optionsScene() {
 		while (app->GetEvent(Event)) {
 			if (Event.Type == sf::Event::MouseButtonPressed) { 
 				int i = 0;
-				for(vector<sf::String>::iterator it = items.begin()+2; it!= items.end(); ++it) {
+				for(vector<sf::String>::iterator it = items.begin()+3; it!= items.end(); ++it) {
 					if (it->GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y) || items_values[i].GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y)) {
 						changeOption(i);
 						optionsItemsDraw();
@@ -218,7 +259,12 @@ void Options::optionsScene() {
 					else if ((items.begin()+1)->GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y)) {
 						save();
 						return;
-					}					
+					}			
+					
+					else if ((items.begin()+2)->GetRect().Contains(Event.MouseButton.X,Event.MouseButton.Y)) {
+						toDefaults();
+						return;
+					}				
 					++i;
 				}
 			}				

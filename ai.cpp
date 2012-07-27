@@ -105,7 +105,9 @@ void Ai::BFS_PathFinding(int cx,int cy) {
 			return;
 		for(int k=0;k<4;++k) {
 			int h = i+near[k], l = j+near[k+1];
-			if (h > n-1 || h < 0 || l > n-1 || l < 0)
+//			if (h > n-1 || h < 0 || l > n-1 || l < 0)
+//				continue;
+			if (!m->checkRange(h,l))
 				continue;
 			if (used[h][l] || m->getState(h,l) == GAME_WALL || m->getState(h,l) == GAME_ENEMY)
 				continue;
@@ -200,7 +202,7 @@ Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
 	player_type = GAME_ENEMY;	// Might be a GAME_PLAYER for real player
 	rotation = -180;
 		
-	n = model->FIELD_SIZE;			// getting field_size;
+	n = model->MAP_SIZE;			// getting the size of map;
 	
 	used = new bool* [n];
 	p = new int* [n];
