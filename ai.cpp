@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstring>
 #include <algorithm>
+#include <SFML/System.hpp>
 #include "ai.h"
 #include "model.h"
 #include "player.h"
@@ -169,7 +170,9 @@ int Ai::turn() {
 								
 	moveTo(b[1].first,b[1].second);			//moving
 	
-	printf("Ai moves to: %d %d \n",b[1].first,b[1].second);
+	char log_str[30];
+	sprintf(log_str,"Ai moves to: %d %d",b[1].first,b[1].second);
+	m->addLogString(sf::String(log_str));
 	
 	if (b[1].first == target_x && b[1].second == target_y) 
 		return m->view->gameOverScene("You Lose!");

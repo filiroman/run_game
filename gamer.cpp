@@ -36,7 +36,9 @@ int Gamer::turn() {
 					default:
 						continue;
 				}		
-				printf("Gamer moves to: %d %d \n",x,y);
+				char log_str[30];
+				sprintf(log_str,"Gamer moves to: %d %d",x,y);
+				m->addLogString(sf::String(log_str));
 				
 				for(vector<PlayerPtr>::iterator it=m->players.begin()+1; it!=m->players.end(); ++it) {
 					if (x == it->get()->getX() && y == it->get()->getY())

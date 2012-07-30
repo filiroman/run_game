@@ -61,7 +61,6 @@ int Model::step() {
 	int res;
 	while (1) {
 		for(vector<PlayerPtr>::iterator it=players.begin()+1; it!=players.end(); ++it) {
-			//usleep(1000*300);
 			if((res = players.begin()->get()->turn()) != GAME_RUNNING) 
 				return res;
 			
@@ -74,33 +73,30 @@ int Model::step() {
 	}
 }
 
-void Model::drawMap() {
+void Model::drawLogStrings(const int &x, const int &y) {
+	int h = y;
+	for(vector<sf::String>::iterator it = log_strings.begin(); it!= log_strings.end(); ++it) {
 	
-	app->Clear(sf::Color::Color(100,100,100));
-	
-	unsigned int height = app->GetHeight();
+		it->SetFont(sf::Font::GetDefaultFont());
+		it->SetColor(sf::Color(200, 200, 149));
+	   it->SetPosition(x, h);
+	   it->SetSize(20.f);
+	   app->Draw(*it);
+	   
+	   h+=it->GetRect().GetHeight();	 
+	}
+}
+
+void Model::drawMiniMap() {
+
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
-	
-   double h = height/2-FIELD_SIZE*IMAGE_SIZE/2;
+	double h = app->GetHeight()/2-FIELD_SIZE*IMAGE_SIZE/2;
    double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
 	
 	pair<int,int> pos = getPlayerPosition();
 	int i_now = pos.first/FIELD_SIZE*FIELD_SIZE;
 	int j_now = pos.second/FIELD_SIZE*FIELD_SIZE;
-	int max_value_i = i_now+FIELD_SIZE;
 	int max_value_j = j_now+FIELD_SIZE;
-	
-	if (max_value_i > MAP_SIZE)
-		max_value_i = MAP_SIZE;
-	if (max_value_j > MAP_SIZE)
-		max_value_j = MAP_SIZE;
-	
-	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(200,200,149)));
-	
-	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(50,50,50)));
-	
-	
-	// Drawing mini map	
 		
 	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);
 	
@@ -137,8 +133,36 @@ void Model::drawMap() {
 		finishText.SetPosition(mutable_w+4,mutable_h-miniMapImg.GetHeight());
 		app->Draw(finishText);
 		
+		drawLogStrings(mini_map_w,mutable_h);
 	}
-	// end mini map drawing
+}
+
+void Model::drawMap() {
+	
+	app->Clear(sf::Color::Color(100,100,100));
+	
+	unsigned int height = app->GetHeight();
+	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
+	
+   double h = height/2-FIELD_SIZE*IMAGE_SIZE/2;
+   double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
+	
+	pair<int,int> pos = getPlayerPosition();
+	int i_now = pos.first/FIELD_SIZE*FIELD_SIZE;
+	int j_now = pos.second/FIELD_SIZE*FIELD_SIZE;
+	int max_value_i = i_now+FIELD_SIZE;
+	int max_value_j = j_now+FIELD_SIZE;
+	
+	if (max_value_i > MAP_SIZE)
+		max_value_i = MAP_SIZE;
+	if (max_value_j > MAP_SIZE)
+		max_value_j = MAP_SIZE;
+	
+	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(200,200,149)));
+	
+	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(50,50,50)));
+	
+	drawMiniMap();										//Draws mini map in front of the rectangles above
 	
 	for (int i=i_now;i<max_value_i;++i) {
 		for (int j=j_now;j<max_value_j;++j) {

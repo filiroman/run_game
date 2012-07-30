@@ -29,6 +29,9 @@
 /* resources folder macro define */
 #define GAME_RESOURCES(name) "resources/"#name
 
+/* defines number of strings that drawn on the screen while game is running */
+#define LOG_STRING_SIZE 6
+
 /* predeclarations of Model used classes */
 class Menu;
 class Ai;
@@ -45,6 +48,7 @@ typedef boost::shared_ptr<Player> PlayerPtr;
 class Model : public AppLayer {
 private:
 	//Fields
+	vector<sf::String> log_strings;		//some game log strings for screen imaging
 	Options *options;
 	char **board;		//Game Board
 	const View *view;
@@ -70,11 +74,20 @@ public:
 	bool checkPaths() const;
 	int step();
 	void drawMap();
+	void drawMiniMap();
+	void drawLogStrings(const int &x, const int &y);
 	pair<int,int> getPlayerPosition() const;
+	void addLogString(const sf::String &st);
 	friend class Gamer;
 	friend class Ai;
 	friend class Application;
 };
+
+inline void Model::addLogString(const sf::String &st) {
+	log_strings.push_back(st);
+	if(log_strings.size()>LOG_STRING_SIZE)
+		log_strings.erase(log_strings.begin());
+}
 
 inline pair<int,int> Model::getPlayerPosition() const {
 	return std::make_pair(players.begin()->get()->getX(),players.begin()->get()->getY());
