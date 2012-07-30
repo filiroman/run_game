@@ -24,9 +24,9 @@
 
 /* defines different map sizes */
 #define MAP_SMALL 10
-#define MAP_AVERAGE 50
-#define MAP_LARGE 100
-#define MAP_HUGE 200
+#define MAP_AVERAGE 40
+#define MAP_LARGE 80
+#define MAP_HUGE 120
 
 /* defines minimal supported resolution width */
 #define MINIMUM_WIDTH 800

@@ -29,16 +29,16 @@ void Options::writeSettingsToStrings() {
 	// writing size to string
 	
 	switch (s->size) {
-		case 10:
+		case MAP_SMALL:
 			items_values.push_back(sf::String("Small"));
 			break;
-		case 50:
+		case MAP_AVERAGE:
 			items_values.push_back(sf::String("Average"));
 			break;
-		case 100:
+		case MAP_LARGE:
 			items_values.push_back(sf::String("Large"));
 			break;
-		case 200:
+		case MAP_HUGE:
 			items_values.push_back(sf::String("Very Large"));
 	}
 	

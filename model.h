@@ -35,7 +35,6 @@
 /* predeclarations of Model used classes */
 class Menu;
 class Ai;
-//class View;
 class Application;
 
 using std::vector;

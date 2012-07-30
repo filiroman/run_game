@@ -99,15 +99,15 @@ void Model::drawMiniMap() {
 	int max_value_j = j_now+FIELD_SIZE;
 		
 	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);
+		
+	int mini_map_w = w+(max_value_j-j_now)*IMAGE_SIZE+10,
+		 mini_map_h = h-2;
+		 
+	int mutable_w = mini_map_w,
+		 mutable_h = mini_map_h;
+		 
+	if (cells_count>1) {	 
 	
-	if (cells_count>1) {
-	
-		int mini_map_w = w+(max_value_j-j_now)*IMAGE_SIZE+10,
-			 mini_map_h = h-2;
-			 
-		int mutable_w = mini_map_w,
-			 mutable_h = mini_map_h;
-			 
 		sf::String miniText("Mini Map:",sf::Font::GetDefaultFont(),25.0f);
 		miniText.SetPosition(mini_map_w,mini_map_h-miniText.GetRect().GetHeight());
 		app->Draw(miniText);
@@ -132,9 +132,8 @@ void Model::drawMiniMap() {
 		sf::String finishText("<-Finish!",sf::Font::GetDefaultFont(),20.0f);
 		finishText.SetPosition(mutable_w+4,mutable_h-miniMapImg.GetHeight());
 		app->Draw(finishText);
-		
-		drawLogStrings(mini_map_w,mutable_h);
 	}
+	drawLogStrings(mini_map_w,mutable_h);
 }
 
 void Model::drawMap() {
@@ -259,6 +258,8 @@ void Model::createPlayers(int computers) {
 		if (w<0) {
 			w = MAP_SIZE-1;
 			h -= FIELD_SIZE;
+			if (h<0)
+				h = MAP_SIZE-1-i;
 		}		
 	}
 					

@@ -149,7 +149,7 @@ int Ai::turn() {
 
 	//real player move (just for easier game and multithreading emulation)
 	int r;
-	for (int i=0;i<30;++i) {
+	for (int i=0;i<30/((int)m->players.size()-1);++i) {
 		usleep(1000*30);
 		if((r = m->players.begin()->get()->turn()) != GAME_RUNNING)
 			return r;
@@ -171,7 +171,7 @@ int Ai::turn() {
 	moveTo(b[1].first,b[1].second);			//moving
 	
 	char log_str[30];
-	sprintf(log_str,"Ai moves to: %d %d",b[1].first,b[1].second);
+	sprintf(log_str,"Ai moves to: %d %d",x,y);
 	m->addLogString(sf::String(log_str));
 	
 	if (b[1].first == target_x && b[1].second == target_y) 
