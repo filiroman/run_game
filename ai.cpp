@@ -17,11 +17,11 @@ const int INF = 1000*1000;
 
 int near[] = {-1, 0, 1, 0, -1};
 
-int Ai::h(int x,int y) {
+int Ai::h(const int &x,const int &y) const {
 	return abs(x - target_x) + abs(y - target_y);
 }
 
-int Ai::f(int x,int y) {
+int Ai::f(const int &x,const int &y) const {
 	return g[x][y] + h(x,y);
 }
 
@@ -85,7 +85,7 @@ void Ai::A_star() {											//A star realisation for Ai turn
 
 /* realisation ai pathfinding through Breadth-first search [ I think it's faster [O(V+E)] than A* (like Djikstra), but when we have egdes with different weight we must use A* or Dijkstra ] */
 
-void Ai::BFS_PathFinding(int cx,int cy) {
+void Ai::BFS_PathFinding(const int &cx,const int &cy) {
 	
 	clear();
 	qt = queue<int> ();
@@ -118,7 +118,7 @@ void Ai::BFS_PathFinding(int cx,int cy) {
 	}
 }
 
-myvec Ai::path() {							//restore path from parents array
+myvec Ai::path() const {							//restore path from parents array
 	int k;
 	k = p[target_x][target_y];
 	myvec v;
@@ -197,7 +197,7 @@ int Ai::test_turn() {
 
 /* Ai constructor */
 
-Ai::Ai(Model *model,int a,int b) :Player(model,a,b) {
+Ai::Ai(Model *model,const int &a,const int &b) :Player(model,a,b) {
 
 	player_type = GAME_ENEMY;	// Might be a GAME_PLAYER for real player
 	rotation = -180;

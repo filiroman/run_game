@@ -87,9 +87,9 @@ void Model::drawMap() {
 	if (max_value_j > MAP_SIZE)
 		max_value_j = MAP_SIZE;
 		
-	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(228,228,149)));
+	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(200,200,149)));
 	
-	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(100,100,100)));
+	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(50,50,50)));
 	
 //	printf("i=%d|j=%d|imax=%d|jmax=%d|\n",i_now,j_now,max_value_i,max_value_j);
 	
@@ -130,14 +130,18 @@ void Model::drawMap() {
 	app->Display();
 }
 
-bool Model::checkPaths() {
-	for(vector<PlayerPtr>::iterator it=players.begin()+1; it!=players.end(); ++it) {
+
+/* checks path availability for every Ai player from it's start position to Gamer's position 
+	returns true if every path is exist and false othewise */
+bool Model::checkPaths() const {
+	for(vector<PlayerPtr>::const_iterator it=players.begin()+1; it!=players.end(); ++it) {
 		if (static_cast<Ai*>(it->get())->test_turn() == GAME_NO_WAY)
 			return false;
 	}
 	return true;
 }
 
+/* Random generating walls on the map, using settings->walls parameter to control the frequency of walls */
 void Model::createWalls() {
 	srand( time (NULL) );	
 	printf("Creating walls...");
@@ -162,6 +166,7 @@ void Model::createWalls() {
 	printf("Done\n");
 }
 
+/* Creates one Gamer and "computers" number of Ai */
 void Model::createPlayers(int computers) {
 	printf("Creating players...");
 	
@@ -177,6 +182,7 @@ void Model::createPlayers(int computers) {
 	printf("Done\n");
 }
 
+/* Creates array for the map */
 void Model::createWorld() {
 	printf("Creating world...");
 	
@@ -184,9 +190,6 @@ void Model::createWorld() {
 	for(int i=0;i<MAP_SIZE;++i)
 		board[i] = new char [MAP_SIZE]();
 		
-//	for(int i=0;i<FIELD_SIZE;i++)
-//		for(int j=0;j<FIELD_SIZE;j++)		
-//			board[i][j] = GAME_EMPTY_CELL;
 	printf("Done\n");
 }
 

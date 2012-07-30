@@ -44,45 +44,48 @@ typedef boost::shared_ptr<Player> PlayerPtr;
 
 class Model : public AppLayer {
 private:
+	//Fields
 	Options *options;
 	char **board;		//Game Board
 	const View *view;
 	vector<PlayerPtr> players;
 	int FIELD_SIZE;	//Size for map to draw in one screen
 	int MAP_SIZE;		//Real size of all map
+	sf::Image gamerImg,computerImg,boxImg,cellImg;
+	sf::Sprite gamerSpr,computerSpr,boxSpr,cellSpr;
+	
+	//Methods
 	void createWorld();
 	void createWalls();
 	void createPlayers(int computers=1);
-	sf::Image gamerImg,computerImg,boxImg,cellImg;
-	sf::Sprite gamerSpr,computerSpr,boxSpr,cellSpr;
 public:
 	Model(Application *apl, Options *opt);
 	~Model();
-	bool checkRange(const int &x,const int &y);
+	bool checkRange(const int &x,const int &y) const;
 	bool addPlayer(Player *p);
-	char getState(int x,int y);
+	char getState(int x,int y) const;
 	void setState(int &x,int &y,char state);
-	bool checkPaths();
+	bool checkPaths() const;
 	int step();
 	void drawMap();
-	pair<int,int> getPlayerPosition();
+	pair<int,int> getPlayerPosition() const;
 	friend class Gamer;
 	friend class Ai;
 	friend class Application;
 };
 
-inline pair<int,int> Model::getPlayerPosition() {
+inline pair<int,int> Model::getPlayerPosition() const {
 	return std::make_pair(players.begin()->get()->getX(),players.begin()->get()->getY());
 }
 
-inline bool Model::checkRange(const int &x,const int &y) {
+inline bool Model::checkRange(const int &x,const int &y) const {
 
 	if (x<0 || y<0 || x>=MAP_SIZE || y>=MAP_SIZE)
 		return false;
 	return true;
 }
 
-inline char Model::getState(int x,int y) {
+inline char Model::getState(int x,int y) const {
 	if (checkRange(x,y)) {
 		return board[x][y];
 	}

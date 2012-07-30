@@ -15,8 +15,8 @@ protected:
 public:
 	double rotation;				//rotation of model (in degrees), for drawing
 	char player_type;
-	Player(Model *model,int a,int b);			//Initialize player on (a,b) position;
-	bool moveTo(const int a,const int b);
+	Player(Model *model,const int &a,const int &b);			//Initialize player on (a,b) position;
+	bool moveTo(const int &a,const int &b);
 	void setBoard(Model *b);
 	
 	int getX()const {			//inline
@@ -26,10 +26,13 @@ public:
 		return y;
 	};
 	
-	void setX(int newX);
-	void setY(int newY);
+	void setX(const int &newX);
+	void setY(const int &newY);
 		
 	virtual int turn(){};
+	virtual ~Player() {
+		m = NULL;
+	}
 };
 
 #endif

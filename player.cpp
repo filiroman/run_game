@@ -10,7 +10,7 @@
 #include "model.h"
 #include "gameexception.h"
 
-Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
+Player::Player(Model *model,const int &a,const int &b) : x(a), y(b), m(model) {
 
 	rotation = 0;
 
@@ -23,7 +23,7 @@ Player::Player(Model *model,int a,int b) : x(a), y(b), m(model) {
 		//throw new GameException("wrong player position in constructor");
 }
 
-bool Player::moveTo(const int a,const int b) {
+bool Player::moveTo(const int &a,const int &b) {
 	
 	rotation = ((a == x) ? acos(b-y) : asin(a-x))*360/(2*acos(-1))*(-1);
 //	printf("rotation: %f\n",rotation);
@@ -47,12 +47,12 @@ void Player::setBoard(Model *b) {
 	m = b;
 }
 
-void Player::setX(int newX) {
+void Player::setX(const int &newX) {
 	if (m->checkRange(newX,y))
 		x = newX;
 }
 
-void Player::setY(int newY) {
+void Player::setY(const int &newY) {
 	if (m->checkRange(x,newY))
 		y = newY;
 }

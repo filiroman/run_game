@@ -32,6 +32,7 @@ using std::string;
 using std::vector;
 
 struct Settings {
+public:
 	int resolution;
 	int size;
 	int walls;
@@ -52,12 +53,16 @@ public:
 	~Options();
 	void toDefaults();
 	bool loadFromFile(const string &filename = DEFAULT_FILENAME);	
-	void save(const string &filename = OPTIONS_FILENAME);
-	Settings *getSettings(); 
-	void getSettingsToArray(int *&p);
+	void save(const string &filename = OPTIONS_FILENAME) const;
+	Settings *getSettings() const; 
+	void getSettingsToArray(int *&p) const;
 	void writeSettingsToStrings();
 	void optionsItemsDraw();
 	void changeOption(int num);
 	void optionsScene();
 };
+
+inline Settings *Options::getSettings() const {
+	return s;
+}
 #endif

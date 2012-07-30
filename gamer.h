@@ -11,7 +11,7 @@ class Model;
 
 class Gamer: public Player {
 public:
-	Gamer(Model *model,int a,int b);
+	Gamer(Model *model,const int &a,const int &b);
 	virtual int turn();
 };
 

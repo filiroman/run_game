@@ -125,7 +125,7 @@ bool Options::loadFromFile(const string &filename) {
 	return false;
 }
 
-void Options::save(const string &filename) {
+void Options::save(const string &filename) const {
 	FILE *f = fopen(filename.c_str(),"wb");
 	assert(f != NULL);
 	
@@ -134,11 +134,7 @@ void Options::save(const string &filename) {
 	fclose(f);
 }
 
-Settings *Options::getSettings() {
-	return s;
-}
-
-void Options::getSettingsToArray(int *&p) {
+void Options::getSettingsToArray(int *&p) const {
 	p = new int[sizeof(int)*OPT_SIZE]();
 	p[0] = s->resolution;
 	p[1] = s->size;

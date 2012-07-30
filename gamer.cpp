@@ -43,7 +43,7 @@ int Gamer::turn() {
 						return m->view->gameOverScene("You Lose!");
 				}
 				
-				if (x == m->FIELD_SIZE-1 && y == m->FIELD_SIZE-1)
+				if (x == m->MAP_SIZE-1 && y == m->MAP_SIZE-1)
 					return m->view->gameOverScene("You Win!");
 				else 
 					return GAME_RUNNING;
@@ -54,7 +54,7 @@ int Gamer::turn() {
 //	}
 }
 
-Gamer::Gamer(Model *model,int a,int b) :Player(model,a,b) {
+Gamer::Gamer(Model *model,const int &a,const int &b) :Player(model,a,b) {
 
 	player_type = GAME_PLAYER;
 };

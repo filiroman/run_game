@@ -29,22 +29,24 @@ private:
 			return lhs.second > rhs.second;
 		};
 	};
+	// fields
 	int target_x, target_y, n;
 	bool **used;
 	int **p,**g;					//for A* (used, parents, g(x) )
 	set<pair<int, int>, mycompare> q;
 	queue<int> qt;
-	int h(int x,int y);
-	int f(int x,int y);
+	// methods
 	void A_star();
-	myvec path();
+	myvec path() const;
 	void clear();
+	int h(const int &x,const int &y) const;
+	int f(const int &x,const int &y) const;
 public:
-	Ai(Model *model,int a,int b);
-	~Ai();
-	void BFS_PathFinding(int cx,int cy);
-	virtual int turn();
+	Ai(Model *model,const int &a,const int &b);
+	void BFS_PathFinding(const int &cx,const int &cy);
 	int test_turn();
+	virtual int turn();
+	virtual ~Ai();
 };
 
 #endif
