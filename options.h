@@ -20,7 +20,7 @@
 #define MAX_SIZE 20
 
 /* defines maximum count of enemies can be */
-#define MAX_ENEMIES 9
+#define MAX_ENEMIES s->size/5
 
 /* defines different map sizes */
 #define MAP_SMALL 10

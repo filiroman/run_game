@@ -103,33 +103,41 @@ void Model::drawMap() {
 	// Drawing mini map	
 		
 	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);
-	int mini_map_w = w+(max_value_j-j_now)*IMAGE_SIZE+6,
-		 mini_map_h = h-2;
-		 
-	int mutable_w = mini_map_w,
-		 mutable_h = mini_map_h;
-		 
-	for (int i=0;i<cells_count;++i) {
-		for (int j=0;j<cells_count;++j) {
+	
+	if (cells_count>1) {
+	
+		int mini_map_w = w+(max_value_j-j_now)*IMAGE_SIZE+10,
+			 mini_map_h = h-2;
+			 
+		int mutable_w = mini_map_w,
+			 mutable_h = mini_map_h;
+			 
+		sf::String miniText("Mini Map:",sf::Font::GetDefaultFont(),25.0f);
+		miniText.SetPosition(mini_map_w,mini_map_h-miniText.GetRect().GetHeight());
+		app->Draw(miniText);
+			 
+		for (int i=0;i<cells_count;++i) {
+			mutable_w = mini_map_w;
+			for (int j=0;j<cells_count;++j) {
 			
-			if (i_now/FIELD_SIZE == i && j_now/FIELD_SIZE == j) {
-				miniMapPlayerSpr.SetPosition(mutable_w,mutable_h);
-				app->Draw(miniMapPlayerSpr);	
-			}
-			else {
-				miniMapSpr.SetPosition(mutable_w,mutable_h);
-				app->Draw(miniMapSpr);	
-			}
-			
-			mutable_w += miniMapImg.GetWidth();
-			
+				if (i_now/FIELD_SIZE == i && j_now/FIELD_SIZE == j) {
+					miniMapPlayerSpr.SetPosition(mutable_w,mutable_h);
+					app->Draw(miniMapPlayerSpr);	
+				}
+				else {
+					miniMapSpr.SetPosition(mutable_w,mutable_h);
+					app->Draw(miniMapSpr);	
+				}
+				mutable_w += miniMapImg.GetWidth();				
+			}		
+			mutable_h += miniMapImg.GetHeight();
 		}
 		
-		mutable_w = mini_map_w;
-		mutable_h += miniMapImg.GetHeight();
+		sf::String finishText("<-Finish!",sf::Font::GetDefaultFont(),20.0f);
+		finishText.SetPosition(mutable_w+4,mutable_h-miniMapImg.GetHeight());
+		app->Draw(finishText);
 		
 	}
-	
 	// end mini map drawing
 	
 	for (int i=i_now;i<max_value_i;++i) {
@@ -214,13 +222,21 @@ void Model::createPlayers(int computers) {
 
 	addPlayer(new Gamer(this,0,0));		
 	
-	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);							
-
-	for (int i=0;i<computers;++i) {
-		addPlayer(new Ai(this,FIELD_SIZE-1-i,FIELD_SIZE-1));
-	}
+	int w = MAP_SIZE-1, h = w;
 	
-	addPlayer(new Ai(this,MAP_SIZE-1-i,MAP_SIZE-1));
+	
+	for (int i=0;i<computers;++i) {
+		addPlayer(new Ai(this,w,h));
+		
+		printf("\nNew Ai added at: x=%d y=%d \n",w,h);	
+		
+		w -= FIELD_SIZE;
+		
+		if (w<0) {
+			w = MAP_SIZE-1;
+			h -= FIELD_SIZE;
+		}		
+	}
 					
 	printf("Done\n");
 }

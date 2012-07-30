@@ -157,8 +157,8 @@ int Ai::turn() {
 	target_x = a.first;
 	target_y = a.second;
 		
-//	A_star();	
-	BFS_PathFinding(x,y);
+	A_star();	
+//	BFS_PathFinding(x,y);
 	myvec b = path();	
 	
 	if (b.empty())
@@ -186,8 +186,9 @@ int Ai::test_turn() {
 	target_x = a.first;
 	target_y = a.second;
 		
-//	A_star();
-	BFS_PathFinding(x,y);
+	A_star();
+//	printf("Finding path!\n");
+//	BFS_PathFinding(x,y);
 	myvec b = path();		
 	
 	if (b.empty())
