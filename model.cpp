@@ -34,11 +34,19 @@ Model::Model(Application *apl, Options *opt) : AppLayer(apl), board(NULL), optio
    	throw new GameException("no file to load: computer_game.png");
    computerSpr = sf::Sprite(computerImg);
    
+   if (!miniMapImg.LoadFromFile(GAME_RESOURCES(map_cell.png)))
+   	throw new GameException("no file to load: map_cell.png");
+   miniMapSpr = sf::Sprite(miniMapImg);
+   
+   if (!miniMapPlayerImg.LoadFromFile(GAME_RESOURCES(map_cell_player.png)))
+   	throw new GameException("no file to load: map_cell_player.png");
+   miniMapPlayerSpr = sf::Sprite(miniMapPlayerImg);
+   
   	MAP_SIZE = options->getSettings()->size;
   	FIELD_SIZE = MAP_SIZE;
   	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
   	
-  	int msize = FIELD_SIZE*IMAGE_SIZE - app->GetHeight();
+  	int msize = FIELD_SIZE*IMAGE_SIZE - app->GetHeight() + IMAGE_SIZE*2;
   	
   	printf("MAP_SIZE=%d\n",MAP_SIZE);
   	
@@ -74,7 +82,7 @@ void Model::drawMap() {
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
 	
    double h = height/2-FIELD_SIZE*IMAGE_SIZE/2;
-   double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/2;
+   double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
 	
 	pair<int,int> pos = getPlayerPosition();
 	int i_now = pos.first/FIELD_SIZE*FIELD_SIZE;
@@ -86,12 +94,43 @@ void Model::drawMap() {
 		max_value_i = MAP_SIZE;
 	if (max_value_j > MAP_SIZE)
 		max_value_j = MAP_SIZE;
-		
+	
 	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(200,200,149)));
 	
 	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(50,50,50)));
 	
-//	printf("i=%d|j=%d|imax=%d|jmax=%d|\n",i_now,j_now,max_value_i,max_value_j);
+	
+	// Drawing mini map	
+		
+	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);
+	int mini_map_w = w+(max_value_j-j_now)*IMAGE_SIZE+6,
+		 mini_map_h = h-2;
+		 
+	int mutable_w = mini_map_w,
+		 mutable_h = mini_map_h;
+		 
+	for (int i=0;i<cells_count;++i) {
+		for (int j=0;j<cells_count;++j) {
+			
+			if (i_now/FIELD_SIZE == i && j_now/FIELD_SIZE == j) {
+				miniMapPlayerSpr.SetPosition(mutable_w,mutable_h);
+				app->Draw(miniMapPlayerSpr);	
+			}
+			else {
+				miniMapSpr.SetPosition(mutable_w,mutable_h);
+				app->Draw(miniMapSpr);	
+			}
+			
+			mutable_w += miniMapImg.GetWidth();
+			
+		}
+		
+		mutable_w = mini_map_w;
+		mutable_h += miniMapImg.GetHeight();
+		
+	}
+	
+	// end mini map drawing
 	
 	for (int i=i_now;i<max_value_i;++i) {
 		for (int j=j_now;j<max_value_j;++j) {
@@ -173,11 +212,15 @@ void Model::createPlayers(int computers) {
 	players.clear();
 	players.reserve(computers+1);
 
-	addPlayer(new Gamer(this,0,0));									
+	addPlayer(new Gamer(this,0,0));		
+	
+	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);							
 
 	for (int i=0;i<computers;++i) {
 		addPlayer(new Ai(this,FIELD_SIZE-1-i,FIELD_SIZE-1));
 	}
+	
+	addPlayer(new Ai(this,MAP_SIZE-1-i,MAP_SIZE-1));
 					
 	printf("Done\n");
 }

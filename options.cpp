@@ -209,6 +209,8 @@ void Options::changeOption(int num) {
 	switch (num) {
 		case 0:
 			s->resolution = (s->resolution+1) % sf::VideoMode::GetModesCount();
+			if (sf::VideoMode::GetMode(s->resolution).Width <MINIMUM_WIDTH)
+				s->resolution = 0;
 			break;
 		case 1:
 			p = std::find(mapsize,mapsize+4,s->size);

@@ -51,8 +51,10 @@ private:
 	vector<PlayerPtr> players;
 	int FIELD_SIZE;	//Size for map to draw in one screen
 	int MAP_SIZE;		//Real size of all map
-	sf::Image gamerImg,computerImg,boxImg,cellImg;
-	sf::Sprite gamerSpr,computerSpr,boxSpr,cellSpr;
+	
+	//sprite and images from sfml library
+	sf::Image gamerImg,computerImg,boxImg,cellImg,miniMapImg,miniMapPlayerImg;
+	sf::Sprite gamerSpr,computerSpr,boxSpr,cellSpr,miniMapSpr,miniMapPlayerSpr;
 	
 	//Methods
 	void createWorld();
