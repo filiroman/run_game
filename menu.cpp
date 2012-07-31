@@ -33,7 +33,7 @@ int Menu::show() {
 		it->SetFont(sf::Font::GetDefaultFont());
 		it->SetColor(sf::Color(0, 128, 128));
 	   it->SetPosition(w, h);
-	   it->SetSize(50.f);
+	   it->SetSize(FONT_SIZE);
 	   app->Draw(*it);
 	   
 	   h+=it->GetRect().GetHeight();	 	  

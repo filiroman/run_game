@@ -34,12 +34,12 @@ Model::Model(Application *apl, Options *opt) : AppLayer(apl), board(NULL), optio
    	throw new GameException("no file to load: computer_game.png");
    computerSpr = sf::Sprite(computerImg);
    
-   if (!miniMapImg.LoadFromFile(GAME_RESOURCES(map_cell.png)))
-   	throw new GameException("no file to load: map_cell.png");
+   if (!miniMapImg.LoadFromFile(GAME_RESOURCES(map_cell_small.png)))
+   	throw new GameException("no file to load: map_cell_small.png");
    miniMapSpr = sf::Sprite(miniMapImg);
    
-   if (!miniMapPlayerImg.LoadFromFile(GAME_RESOURCES(map_cell_player.png)))
-   	throw new GameException("no file to load: map_cell_player.png");
+   if (!miniMapPlayerImg.LoadFromFile(GAME_RESOURCES(map_cell_player_small.png)))
+   	throw new GameException("no file to load: map_cell_player_small.png");
    miniMapPlayerSpr = sf::Sprite(miniMapPlayerImg);
    
   	MAP_SIZE = options->getSettings()->size;
@@ -52,7 +52,13 @@ Model::Model(Application *apl, Options *opt) : AppLayer(apl), board(NULL), optio
   	
   	if (msize > 0)
   		FIELD_SIZE -= ceil((msize+0.0f)/IMAGE_SIZE);
-  	printf("FIELD_SIZE=%d\n",FIELD_SIZE);
+  	
+	int cells_count = MAP_SIZE/FIELD_SIZE + static_cast<bool> (MAP_SIZE%FIELD_SIZE);
+  	
+  	msize = FIELD_SIZE*IMAGE_SIZE + cells_count*miniMapImg.GetWidth()  - app->GetWidth();
+  	if (msize > 0)
+		FIELD_SIZE -= ceil((msize+0.0f)/IMAGE_SIZE);
+ 	printf("FIELD_SIZE=%d\n",FIELD_SIZE);  	
 }
 
 int Model::step() {
@@ -80,7 +86,7 @@ void Model::drawLogStrings(const int &x, const int &y) {
 		it->SetFont(sf::Font::GetDefaultFont());
 		it->SetColor(sf::Color(200, 200, 149));
 	   it->SetPosition(x, h);
-	   it->SetSize(20.f);
+	   it->SetSize(FONT_SIZE/3);
 	   app->Draw(*it);
 	   
 	   h+=it->GetRect().GetHeight();	 
@@ -90,8 +96,8 @@ void Model::drawLogStrings(const int &x, const int &y) {
 void Model::drawMiniMap() {
 
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
-	double h = app->GetHeight()/2-FIELD_SIZE*IMAGE_SIZE/2;
-   double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
+	double h = 50; 				//app->GetHeight()/2-FIELD_SIZE*IMAGE_SIZE/2;
+   double w = 50;					//app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
 	
 	pair<int,int> pos = getPlayerPosition();
 	int i_now = pos.first/FIELD_SIZE*FIELD_SIZE;
@@ -108,7 +114,7 @@ void Model::drawMiniMap() {
 		 
 	if (cells_count>1) {	 
 	
-		sf::String miniText("Mini Map:",sf::Font::GetDefaultFont(),25.0f);
+		sf::String miniText("Mini Map:",sf::Font::GetDefaultFont(),FONT_SIZE/2);
 		miniText.SetPosition(mini_map_w,mini_map_h-miniText.GetRect().GetHeight());
 		app->Draw(miniText);
 			 
@@ -129,7 +135,7 @@ void Model::drawMiniMap() {
 			mutable_h += miniMapImg.GetHeight();
 		}
 		
-		sf::String finishText("<-Finish!",sf::Font::GetDefaultFont(),20.0f);
+		sf::String finishText("<-Finish!",sf::Font::GetDefaultFont(),FONT_SIZE/3);
 		finishText.SetPosition(mutable_w+4,mutable_h-miniMapImg.GetHeight());
 		app->Draw(finishText);
 	}
@@ -143,8 +149,8 @@ void Model::drawMap() {
 	unsigned int height = app->GetHeight();
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
 	
-   double h = height/2-FIELD_SIZE*IMAGE_SIZE/2;
-   double w = app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
+   double h = 50;					//height/2-FIELD_SIZE*IMAGE_SIZE/2;
+   double w = 50;					//app->GetWidth()/2-FIELD_SIZE*IMAGE_SIZE/3*2;
 	
 	pair<int,int> pos = getPlayerPosition();
 	int i_now = pos.first/FIELD_SIZE*FIELD_SIZE;
@@ -237,7 +243,7 @@ void Model::createWalls() {
 }
 
 /* Creates one Gamer and "computers" number of Ai */
-void Model::createPlayers(int computers) {
+void Model::createPlayers(const int &computers) {
 	printf("Creating players...");
 	
 	players.clear();
@@ -259,7 +265,7 @@ void Model::createPlayers(int computers) {
 			w = MAP_SIZE-1;
 			h -= FIELD_SIZE;
 			if (h<0)
-				h = MAP_SIZE-1-i;
+				h = MAP_SIZE-2-i;
 		}		
 	}
 					

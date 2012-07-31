@@ -24,12 +24,15 @@
 
 /* defines different map sizes */
 #define MAP_SMALL 10
-#define MAP_AVERAGE 40
-#define MAP_LARGE 80
-#define MAP_HUGE 120
+#define MAP_AVERAGE 30
+#define MAP_LARGE 60
+#define MAP_HUGE 100
 
 /* defines minimal supported resolution width */
 #define MINIMUM_WIDTH 800
+
+/* defines game font size */
+#define FONT_SIZE app->getFontSize()
 
 using std::string;
 using std::vector;

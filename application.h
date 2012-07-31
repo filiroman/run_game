@@ -22,6 +22,7 @@ private:
 	Model *game;
 	Menu *menu;
 	Options *options;
+	double font_size; 				//just for fast access to font size from any class
 	//list<Model> games;			//Using list in perspective to many parallel online games (each with menu and options)
 public:
 	Application();
@@ -29,6 +30,11 @@ public:
 	//void newGame();
 	void run();	
 	bool startGame();
+	double getFontSize()const;
 };
+
+inline double Application::getFontSize() const {
+	return font_size;
+}
 
 #endif

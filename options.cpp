@@ -156,7 +156,7 @@ void Options::optionsItemsDraw() {
 	items.begin()->SetFont(sf::Font::GetDefaultFont());
 	items.begin()->SetColor(sf::Color(0, 128, 128));
 	items.begin()->SetPosition(w, h);
-	items.begin()->SetSize(50.f);
+	items.begin()->SetSize(FONT_SIZE);
 	app->Draw(*(items.begin()));	
 	
 	h+=items.begin()->GetRect().GetHeight()*2;
@@ -170,12 +170,12 @@ void Options::optionsItemsDraw() {
 		it->SetFont(sf::Font::GetDefaultFont());
 		it->SetColor(sf::Color(0, 128, 128));
 	   it->SetPosition(w, h);
-	   it->SetSize(50.f);
+	   it->SetSize(FONT_SIZE);
 	   app->Draw(*it);
 	   
 		items_values[i].SetFont(sf::Font::GetDefaultFont());
 		items_values[i].SetColor(sf::Color(0, 128, 128));
-	   items_values[i].SetSize(50.f);
+	   items_values[i].SetSize(FONT_SIZE);
 	   items_values[i].SetPosition(app_width-items_values[i].GetRect().GetWidth()-20, h);
 	   app->Draw(items_values[i]);
 	   
@@ -188,14 +188,14 @@ void Options::optionsItemsDraw() {
 	(items.begin()+1)->SetFont(sf::Font::GetDefaultFont());
 	(items.begin()+1)->SetColor(sf::Color(0, 128, 128));
 	(items.begin()+1)->SetPosition(w, h);
-	(items.begin()+1)->SetSize(40.f);
+	(items.begin()+1)->SetSize(FONT_SIZE/5*4);
 	app->Draw(*(items.begin()+1));	
 	
 	// Drawing "To defaults" string
 	
 	(items.begin()+2)->SetFont(sf::Font::GetDefaultFont());
 	(items.begin()+2)->SetColor(sf::Color(0, 128, 128));
-	(items.begin()+2)->SetSize(40.f);
+	(items.begin()+2)->SetSize(FONT_SIZE/5*4);
 	(items.begin()+2)->SetPosition(app->GetWidth()-(items.begin()+2)->GetRect().GetWidth()-20, h);
 	app->Draw(*(items.begin()+2));	
 	

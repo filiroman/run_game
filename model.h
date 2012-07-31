@@ -62,7 +62,7 @@ private:
 	//Methods
 	void createWorld();
 	void createWalls();
-	void createPlayers(int computers=1);
+	void createPlayers(const int &computers=1);
 public:
 	Model(Application *apl, Options *opt);
 	~Model();

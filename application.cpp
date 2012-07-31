@@ -13,6 +13,7 @@ Application::Application() {
 	options = new Options(this);
 	menu = new Menu(this);	
 	Settings *st = options->getSettings();
+	font_size = sf::VideoMode::GetMode(st->resolution).Width/25;
 	sf::Window::Create(sf::VideoMode::GetMode(st->resolution), GAME_WINDOW_NAME, st->fullscreen ? sf::Style::Fullscreen : sf::Style::Close);
 }
 

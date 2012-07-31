@@ -8,6 +8,7 @@
 #include "view.h"
 #include "application.h"
 #include "model.h"
+#include "options.h"
 
 View::View(Application *apl) : AppLayer(apl) {};
 
@@ -58,18 +59,18 @@ int View::gameOverScene(const std::string &s) const {
 	GameOver.SetFont(sf::Font::GetDefaultFont());
 	GameOver.SetColor(sf::Color(0, 128, 128));
 	GameOver.SetPosition(app->GetWidth()/2, app->GetHeight()/2);
-	GameOver.SetSize(50.f);
+	GameOver.SetSize(FONT_SIZE);
 	
 	sf::String Yes("Yes/"), No("No");
 	Yes.SetFont(sf::Font::GetDefaultFont());
 	Yes.SetColor(sf::Color(0, 128, 128));
 	Yes.SetPosition(GameOver.GetPosition().x, GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
-	Yes.SetSize(50.f);
+	Yes.SetSize(FONT_SIZE);
 	
 	No.SetFont(sf::Font::GetDefaultFont());
 	No.SetColor(sf::Color(0, 128, 128));
 	No.SetPosition(GameOver.GetPosition().x + Yes.GetRect().GetWidth(), GameOver.GetPosition().y + GameOver.GetRect().GetHeight());
-	No.SetSize(50.f);
+	No.SetSize(FONT_SIZE);
 	
 	app->Draw(GameOver);
 	app->Draw(Yes);
