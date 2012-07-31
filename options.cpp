@@ -26,6 +26,19 @@ void Options::writeSettingsToStrings() {
 	
 	items_values.push_back(sf::String(tmp));
 	
+	// writing difficulty to string
+	
+	switch (s->difficulty) {
+		case 0:
+			items_values.push_back(sf::String("Easy"));
+			break;
+		case 1:
+			items_values.push_back(sf::String("Medium"));
+			break;
+		case 2:
+			items_values.push_back(sf::String("Hard"));
+	}
+	
 	// writing size to string
 	
 	switch (s->size) {
@@ -76,7 +89,8 @@ Options::Options(Application *apl) : AppLayer(apl), s(NULL) {
 	items.push_back(sf::String("Options:"));
 	items.push_back(sf::String("back to menu"));
 	items.push_back(sf::String("To defaults"));
-	items.push_back(sf::String("Resolution"));
+	items.push_back(sf::String("Resolution(after next run)"));
+	items.push_back(sf::String("Difficulty"));
 	items.push_back(sf::String("Size"));
 	items.push_back(sf::String("Walls"));
 	items.push_back(sf::String("Enemies"));
@@ -96,6 +110,7 @@ void Options::toDefaults() {
 		
 		s = new Settings;
 		s->resolution = 2;
+		s->difficulty = 0;
 		s->size = 10;
 		s->walls = 1;
 		s->enemies = 1;
@@ -137,16 +152,17 @@ void Options::save(const string &filename) const {
 void Options::getSettingsToArray(int *&p) const {
 	p = new int[sizeof(int)*OPT_SIZE]();
 	p[0] = s->resolution;
-	p[1] = s->size;
-	p[2] = s->walls;
-	p[3] = s->enemies;
-	p[4] = static_cast<int>(s->fullscreen);
-	p[5] = static_cast<int>(s->edges);	
+	p[1] = s->difficulty;
+	p[2] = s->size;
+	p[3] = s->walls;
+	p[4] = s->enemies;
+	p[5] = static_cast<int>(s->fullscreen);
+	p[6] = static_cast<int>(s->edges);	
 }
 
 void Options::optionsItemsDraw() {
 
-	double w = 180, h = 60;
+	double w = 180, h = 90;
 
 	View::getInstance(app)->menuDraw();
 	writeSettingsToStrings();
@@ -183,6 +199,12 @@ void Options::optionsItemsDraw() {
 	   ++i;	   
 	}
 	
+	// Drawing separator
+	
+	app->Draw(sf::Shape::Rectangle(w, h+5, app->GetWidth()-20, h+6, sf::Color::Color(100,100,100)));
+	
+	h +=6;
+	
 	// Drawing "Back to menu" string
 	
 	(items.begin()+1)->SetFont(sf::Font::GetDefaultFont());
@@ -213,6 +235,9 @@ void Options::changeOption(int num) {
 				s->resolution = 0;
 			break;
 		case 1:
+			s->difficulty = (s->difficulty+1) % 3;
+			break;
+		case 2:
 			p = std::find(mapsize,mapsize+4,s->size);
 			if (p == mapsize+3)
 				s->size = *(mapsize);
@@ -223,18 +248,18 @@ void Options::changeOption(int num) {
 				s->size = MIN_SIZE;
 			p = NULL;
 			break;
-		case 2:
+		case 3:
 			s->walls = (s->walls+1) % 3;
 			break;
-		case 3:
+		case 4:
 			s->enemies = (s->enemies+1) % (MAX_ENEMIES+1);
 			if (s->enemies == 0)
 				s->enemies = 1;
 			break;
-		case 4:
+		case 5:
 			s->fullscreen = !s->fullscreen;
 			break;
-		case 5:
+		case 6:
 			s->edges = !s->edges;
 	}
 }

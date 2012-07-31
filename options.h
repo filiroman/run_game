@@ -13,7 +13,7 @@
 #include "applayer.h"
 
 /* different options records number, such as resolution,size,walls and so on */
-#define OPT_SIZE 6
+#define OPT_SIZE 7
 
 /* defines minimum maximum size of board */
 #define MIN_SIZE 5
@@ -40,6 +40,7 @@ using std::vector;
 struct Settings {
 public:
 	int resolution;
+	int difficulty;
 	int size;
 	int walls;
 	int enemies;
