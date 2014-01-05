@@ -14,6 +14,7 @@
 class Model;
 class Menu;
 class Options;
+class MapEditor;
 
 using std::list;
 
@@ -22,6 +23,7 @@ private:
 	Model *game;
 	Menu *menu;
 	Options *options;
+	MapEditor *medit;
 	double font_size; 				//just for fast access to font size from any class
 	//list<Model> games;			//Using list in perspective to many parallel online games (each with menu and options)
 public:

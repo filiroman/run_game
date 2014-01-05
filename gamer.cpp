@@ -9,6 +9,7 @@
 #include "model.h"
 #include "application.h"
 #include "options.h"
+#include "view.h"
 
 int Gamer::turn() {
 //	int a,b;

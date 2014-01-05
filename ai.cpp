@@ -9,7 +9,6 @@
 #include <SFML/System.hpp>
 #include "ai.h"
 #include "model.h"
-#include "player.h"
 #include "options.h"
 #include "view.h"
 #include "application.h"
@@ -100,6 +99,8 @@ void Ai::BFS_PathFinding(const int &cx,const int &cy) {
 		qt.pop();
 		
 		int i = v/n, j = v%n;
+		if (used[i][j])
+			continue;
 		used[i][j] = true;
 		
 		if (i == target_x && j == target_y)
@@ -150,7 +151,7 @@ int Ai::turn() {
 	//real player move (just for easier game and multithreading emulation)
 	int r;
 	for (int i=0;i<30/((int)m->players.size()-1);++i) {
-		usleep(1000*30);
+		usleep(1000*30/(m->options->getSettings()->difficulty+1));
 		if((r = m->players.begin()->get()->turn()) != GAME_RUNNING)
 			return r;
 	}
@@ -158,8 +159,8 @@ int Ai::turn() {
 	target_x = a.first;
 	target_y = a.second;
 		
-	A_star();	
-//	BFS_PathFinding(x,y);
+//	A_star();	
+	BFS_PathFinding(x,y);
 	myvec b = path();	
 	
 	if (b.empty())
@@ -189,9 +190,9 @@ int Ai::test_turn() {
 	target_x = a.first;
 	target_y = a.second;
 		
-	A_star();
+//	A_star();
 //	printf("Finding path!\n");
-//	BFS_PathFinding(x,y);
+	BFS_PathFinding(x,y);
 	myvec b = path();		
 	
 	if (b.empty())

@@ -8,10 +8,12 @@
 #include "model.h"
 #include "options.h"
 #include "menu.h"
+#include "mapeditor.h"
 
 Application::Application() {
 	options = new Options(this);
 	menu = new Menu(this);	
+	//medit = new MapEditor(this);
 	Settings *st = options->getSettings();
 	font_size = sf::VideoMode::GetMode(st->resolution).Width/25;
 	sf::Window::Create(sf::VideoMode::GetMode(st->resolution), GAME_WINDOW_NAME, st->fullscreen ? sf::Style::Fullscreen : sf::Style::Close);
@@ -69,7 +71,10 @@ void Application::run() {
 			case GO_OPTIONS:
 				options->optionsScene();
 				break;
-			case GO_ABOUT:						//cases #defined at menu.h (integer values from 1 to 4)
+			case GO_MAP_EDITOR:
+				//medit->show();
+				break;
+			case GO_ABOUT:						//cases #defined at menu.h (integer values)
 				menu->aboutScene();
 				break;
 			case GO_HELP:

@@ -10,7 +10,7 @@
 #include <vector>
 #include <queue>
 #include "player.h"
-//#include "model.h"
+
 class Model;
 using std::set;
 using std::vector;

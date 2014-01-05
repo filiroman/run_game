@@ -6,18 +6,28 @@
 //#include <string>
 #include <SFML/Graphics.hpp>
 #include <cstdio>
+#include <string>
 #include "application.h"
 #include "menu.h"
 #include "model.h"
 #include "view.h"
 
+using std::string;
+
 Menu::Menu(Application *apl) : AppLayer(apl) {
 
 	items.push_back(sf::String("New Game"));
 	items.push_back(sf::String("Settings"));
+	items.push_back(sf::String("Map Editor"));
 	items.push_back(sf::String("About"));
 	items.push_back(sf::String("Help"));
 	items.push_back(sf::String("Exit"));
+}
+
+Menu::Menu(Application *apl, vector<string> menuItems) : AppLayer(apl) {
+	for(vector<string>::iterator it = menuItems.begin(); it!= menuItems.end(); ++it) {
+		items.push_back(sf::String(*it));
+	}
 }
 
 int Menu::show() {

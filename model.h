@@ -12,10 +12,9 @@
 #include <string>
 #include <cstring>
 #include "player.h"
-#include "view.h"
-#include "gameexception.h"
 #include "options.h"
 #include "applayer.h"
+#include "gameexception.h"
 
 /* map cells state defines (returned by model->getState)*/
 #define GAME_WALL '3'
@@ -36,6 +35,7 @@
 class Menu;
 class Ai;
 class Application;
+class View;
 
 using std::vector;
 using std::pair;

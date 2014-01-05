@@ -6,14 +6,16 @@
 #ifndef _MENU_H_
 #define _MENU_H_
 #include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include "applayer.h"
 
 #define NEW_GAME 0
 #define GO_OPTIONS 1
-#define GO_ABOUT 2
-#define GO_HELP 3
-#define EXIT_GAME 4
+#define GO_MAP_EDITOR 2
+#define GO_ABOUT 3
+#define GO_HELP 4
+#define EXIT_GAME 5
 
 using std::vector;
 
@@ -24,6 +26,7 @@ private:
 	vector<sf::String> items;
 public:
 	Menu(Application *apl);
+	Menu(Application *apl, vector<std::string> menuItems);
 	int show();
 	void aboutScene();
 	void helpScene();	

@@ -13,7 +13,6 @@
 #include "ai.h"
 #include "view.h"
 #include "application.h"
-#include "gameexception.h"
 
 Model::Model(Application *apl, Options *opt) : AppLayer(apl), board(NULL), options(opt) {
 	view = View::getInstance(apl);
