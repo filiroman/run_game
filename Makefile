@@ -25,4 +25,4 @@ applayer.o: applayer.cpp applayer.h
 clean:
 	rm -f *.o; rm main
 install:
-	cp  sfml/lib/*.* /usr/lib/; rm -r /usr/include/SFML; mkdir /usr/include/SFML; cp -R sfml/include/SFML/* /usr/include/SFML/
+	cp  sfml/lib/*.* /usr/lib/; mkdir -p /usr/include/SFML; cp -R sfml/include/SFML/* /usr/include/SFML/
