@@ -9,6 +9,7 @@ to make you need sfml-1.6 library, which you can download on http://sfml-dev.org
 
 after that, just cd to the sources folder and copy to terminal:
 
+sudo make install
 make
 
 

@@ -143,7 +143,7 @@ void Model::drawMiniMap() {
 
 void Model::drawMap() {
 	
-	app->Clear(sf::Color::Color(100,100,100));
+	app->Clear(sf::Color(100,100,100));
 	
 	unsigned int height = app->GetHeight();
 	unsigned int IMAGE_SIZE = gamerImg.GetWidth();
@@ -162,9 +162,9 @@ void Model::drawMap() {
 	if (max_value_j > MAP_SIZE)
 		max_value_j = MAP_SIZE;
 	
-	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color::Color(200,200,149)));
+	app->Draw(sf::Shape::Rectangle(w-2, h-2, w+(max_value_j-j_now)*IMAGE_SIZE+2, h+(max_value_i-i_now)*IMAGE_SIZE+2, sf::Color(200,200,149)));
 	
-	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color::Color(50,50,50)));
+	app->Draw(sf::Shape::Rectangle(w, h, w+(max_value_j-j_now)*IMAGE_SIZE, h+(max_value_i-i_now)*IMAGE_SIZE, sf::Color(50,50,50)));
 	
 	drawMiniMap();										//Draws mini map in front of the rectangles above
 	

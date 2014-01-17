@@ -39,9 +39,9 @@ void View::menuDraw() const {
 	test4.SetPosition(100,100);
 	test4.Rotate(-90);
 	
-	app->Draw(sf::Shape::Rectangle(test.GetPosition().x-test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+4, app->GetWidth()-test.GetPosition().x+test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+6, sf::Color::Color(100,100,100)));
+	app->Draw(sf::Shape::Rectangle(test.GetPosition().x-test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+4, app->GetWidth()-test.GetPosition().x+test.GetSubRect().GetWidth()*1.5, test.GetPosition().y+test.GetSubRect().GetHeight()+6, sf::Color(100,100,100)));
 	
-	app->Draw(sf::Shape::Rectangle(test.GetPosition().x+test.GetSubRect().GetWidth()+4, test.GetPosition().y-test.GetSubRect().GetHeight()*1.5, test.GetPosition().x+test.GetSubRect().GetWidth()+6, app->GetHeight()-test.GetPosition().y+test.GetSubRect().GetHeight()*1.5, sf::Color::Color(100,100,100)));
+	app->Draw(sf::Shape::Rectangle(test.GetPosition().x+test.GetSubRect().GetWidth()+4, test.GetPosition().y-test.GetSubRect().GetHeight()*1.5, test.GetPosition().x+test.GetSubRect().GetWidth()+6, app->GetHeight()-test.GetPosition().y+test.GetSubRect().GetHeight()*1.5, sf::Color(100,100,100)));
 	
 	app->Draw(test);	
 	app->Draw(test2);

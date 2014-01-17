@@ -201,7 +201,7 @@ void Options::optionsItemsDraw() {
 	
 	// Drawing separator
 	
-	app->Draw(sf::Shape::Rectangle(w, h+5, app->GetWidth()-20, h+6, sf::Color::Color(100,100,100)));
+	app->Draw(sf::Shape::Rectangle(w, h+5, app->GetWidth()-20, h+6, sf::Color(100,100,100)));
 	
 	h +=6;
 	

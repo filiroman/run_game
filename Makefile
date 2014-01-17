@@ -23,4 +23,6 @@ view.o: view.cpp view.h applayer.h application.h model.h options.h
 applayer.o: applayer.cpp applayer.h
 	g++ -c applayer.cpp
 clean:
-	rm -f *.o
+	rm -f *.o; rm main
+install:
+	cp  sfml/lib/*.* /usr/lib/; mkdir /usr/include/SFML; cp -R sfml/include/SFML/* /usr/include/SFML/
